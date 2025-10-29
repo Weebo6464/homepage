@@ -1,7 +1,8 @@
 const API_ENDPOINT = 'http://rwfc.net/api/groups';
 const CORS_PROXIES = [
-    'https://api.allorigins.win/raw?url=',
-    'https://corsproxy.io/?'
+    'https://corsproxy.io/?',
+    'https://api.codetabs.com/v1/proxy?quest=',
+    'https://api.allorigins.win/raw?url='
 ];
 let currentProxyIndex = 0;
 
@@ -126,7 +127,16 @@ async function fetchRooms() {
         for (let i = 0; i < CORS_PROXIES.length; i++) {
             try {
                 const proxy = CORS_PROXIES[(currentProxyIndex + i) % CORS_PROXIES.length];
-                const response = await fetch(proxy + encodeURIComponent(API_ENDPOINT));
+                console.log(`Trying proxy: ${proxy}`);
+
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+                const response = await fetch(proxy + encodeURIComponent(API_ENDPOINT), {
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
@@ -135,6 +145,7 @@ async function fetchRooms() {
                 const groups = await response.json();
 
                 currentProxyIndex = (currentProxyIndex + i) % CORS_PROXIES.length;
+                console.log(`Success with proxy: ${proxy}`);
 
                 loading.style.display = 'none';
 
@@ -149,7 +160,7 @@ async function fetchRooms() {
 
             } catch (proxyErr) {
                 lastError = proxyErr;
-                console.warn(`Proxy ${CORS_PROXIES[(currentProxyIndex + i) % CORS_PROXIES.length]} failed:`, proxyErr);
+                console.warn(`Proxy ${CORS_PROXIES[(currentProxyIndex + i) % CORS_PROXIES.length]} failed:`, proxyErr.message);
             }
         }
 
