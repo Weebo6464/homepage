@@ -1,4 +1,4 @@
-const API_URL = 'http://rwfc.net/api/groups';
+const API_URL = 'https://rwfc.net/api/groups';
 
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
@@ -336,3 +336,4 @@ setInterval(() => {
 }, 60000);
 
 fetchRooms();
+
