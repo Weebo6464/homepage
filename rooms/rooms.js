@@ -1,4 +1,52 @@
-const API_URL = 'https://rwfc.net/api/groups';
+const API_ENDPOINT = 'http://rwfc.net/api/groups';
+const CORS_PROXIES = [
+    'https://api.allorigins.win/raw?url=',
+    'https://corsproxy.io/?'
+];
+let currentProxyIndex = 0;
+
+const GAMEMODE_MAP = {
+    "10": "Retro Tracks",
+    "11": "Online TT",
+    "12": "200cc",
+    "13": "Item Rain",
+    "14": "Regular Battle",
+    "15": "Elimination Battle",
+    "20": "Custom Tracks",
+    "21": "Vanilla Tracks",
+    "22": "CT 200cc",
+    "666": "Luminous 150cc",
+    "667": "Luminous Online TT",
+    "668": "CTGP-C",
+    "751": "Versus",
+    "-1": "Regular",
+    "69": "IKW Default",
+    "70": "IKW Ultras VS",
+    "71": "IKW Countdown",
+    "72": "IKW Bob-omb Blast",
+    "73": "IKW Infinite Accel",
+    "74": "IKW Banana Slip",
+    "75": "IKW Random Items",
+    "76": "IKW Unfair Items",
+    "77": "IKW Blue Shell Madness",
+    "78": "IKW Mushroom Dash",
+    "79": "IKW Bumper Karts",
+    "80": "IKW Item Rampage",
+    "81": "IKW Item Rain",
+    "82": "IKW Shell Break",
+    "83": "IKW Riibalanced",
+    "875": "OptPack 150cc",
+    "876": "OptPack Online TT",
+    "877": "OptPack",
+    "878": "OptPack",
+    "879": "OptPack",
+    "880": "OptPack",
+    "1312": "WTP 150cc",
+    "1313": "WTP 200cc",
+    "1314": "WTP Online TT",
+    "1315": "WTP Item Rain",
+    "1316": "WTP STYD"
+};
 
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
@@ -73,23 +121,39 @@ async function fetchRooms() {
     const roomsGrid = document.getElementById('roomsGrid');
 
     try {
-        const response = await fetch(API_URL);
+        let lastError;
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch rooms');
+        for (let i = 0; i < CORS_PROXIES.length; i++) {
+            try {
+                const proxy = CORS_PROXIES[(currentProxyIndex + i) % CORS_PROXIES.length];
+                const response = await fetch(proxy + encodeURIComponent(API_ENDPOINT));
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const groups = await response.json();
+
+                currentProxyIndex = (currentProxyIndex + i) % CORS_PROXIES.length;
+
+                loading.style.display = 'none';
+
+                if (!groups || groups.length === 0) {
+                    roomsGrid.innerHTML = '<div class="no-rooms">🏁 No active rooms at the moment</div>';
+                    updateStats(0, 0);
+                    return;
+                }
+
+                displayRooms(groups);
+                return;
+
+            } catch (proxyErr) {
+                lastError = proxyErr;
+                console.warn(`Proxy ${CORS_PROXIES[(currentProxyIndex + i) % CORS_PROXIES.length]} failed:`, proxyErr);
+            }
         }
 
-        const groups = await response.json();
-
-        loading.style.display = 'none';
-
-        if (!groups || groups.length === 0) {
-            roomsGrid.innerHTML = '<div class="no-rooms">🏁 No active rooms at the moment</div>';
-            updateStats(0, 0);
-            return;
-        }
-
-        displayRooms(groups);
+        throw lastError || new Error('All proxies failed');
 
     } catch (err) {
         console.error('Error fetching rooms:', err);
@@ -157,6 +221,10 @@ function createRoomCard(group, index) {
     const lobbyType = group.type === 'private' ? 'Private' : 'Public';
     const lobbyClass = group.type === 'private' ? 'lobby-private' : 'lobby-public';
 
+    const roomKey = group.rk || '';
+    const gamemodeId = roomKey.startsWith('vs_') ? roomKey.split('_')[1] : '';
+    const gamemodeName = GAMEMODE_MAP[gamemodeId] || 'Unknown Mode';
+
     let playerStatus = `${playerCount}/${maxPlayers} Players`;
     let statusClass = '';
     if (playerCount === maxPlayers) {
@@ -192,6 +260,7 @@ function createRoomCard(group, index) {
                 <div class="room-title">Room ${index + 1}</div>
                 <div class="room-meta">
                     <span class="lobby-type ${lobbyClass}">${lobbyType}</span>
+                    <span class="gamemode">🎮 ${gamemodeName}</span>
                     <span class="time-active">⏱️ ${timeActive}</span>
                 </div>
             </div>
@@ -336,4 +405,3 @@ setInterval(() => {
 }, 60000);
 
 fetchRooms();
-
