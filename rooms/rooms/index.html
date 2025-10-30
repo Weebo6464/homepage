@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Rewind - Online Rooms</title>
+    <link rel="icon" type="image/png" href="../images/Weebo_logo.png">
+    <meta property="og:title" content="Retro Rewind - Online Rooms">
+    <meta property="og:description" content="View active Retro Rewind online rooms and players">
+    <meta name="theme-color" content="#ff6b6b">
+    <link rel="stylesheet" href="rooms.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <canvas id="stars"></canvas>
+
+    <a href="../index.html" class="back-button">
+        <span class="back-icon">←</span>
+        <span class="back-text">Back to Home</span>
+    </a>
+
+    <div class="theme-switcher">
+        <button id="theme-toggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+        </button>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Retro Rewind</h1>
+                <p class="subtitle">Online Rooms</p>
+                <p class="tagline">Live player tracking and room statistics</p>
+            </div>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">🏠</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="totalRooms">0</span>
+                        <span class="stat-label">Active Rooms</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="totalPlayers">0</span>
+                        <span class="stat-label">Players Online</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading rooms...</p>
+        </div>
+
+        <div class="error" id="error" style="display: none;">
+            <div class="error-icon">⚠️</div>
+            <p>Failed to load rooms. Please try again later.</p>
+            <button class="retry-button" onclick="location.reload()">Retry</button>
+        </div>
+
+        <div class="rooms-section">
+            <div class="rooms-grid" id="roomsGrid"></div>
+        </div>
+
+        <footer>
+            <p>Made with 💜 by Weebo64 for <a href="https://wiki.tockdom.com/wiki/Retro_Rewind" target="_blank"
+                    rel="noopener noreferrer">Retro Rewind</a></p>
+            <p class="footer-note">Auto-refreshes every minute • <a href="http://rwfc.net/api/groups" target="_blank"
+                    rel="noopener noreferrer">API Endpoint</a> • <a href="https://wiki.tockdom.com/wiki/CTMKF"
+                    target="_blank" rel="noopener noreferrer">Chadderz's Terrible Mario Kart Font</a> • <a
+                    href="https://github.com/Weebo6464/homepage/tree/main/rooms" target="_blank"
+                    rel="noopener noreferrer">Page Source</a></p>
+        </footer>
+    </div>
+
+    <script src="rooms.js"></script>
+</body>
+
+</html>
