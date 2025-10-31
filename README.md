@@ -7,8 +7,6 @@
 
 **Hey there! I'm Weebo64, a 23-year-old hobby developer who loves creating custom 3D models for Super Mario 64 and Mario Kart Wii.**
 
-### 🎮 [**Visit My Website!**](https://weebo6464.github.io/weebo64-portfolio/) 🎮
-
 *Feel free to explore and check out what I've been working on!*
 
 </div>
@@ -23,20 +21,6 @@ I'm a passionate modder and developer in the Nintendo modding community! I speci
 - 🏎️ **Mario Kart Wii Modding** - Developer for Retro Rewind & Insane Kart Wii
 - ⭐ **Super Mario 64 Modding** - High-quality model ports and custom content
 - 🛡️ **Community Management** - Moderator for RetroWFC and IKWFC
-
----
-
-## 🌐 Visit My Website
-
-**[Click here to visit my portfolio!](https://weebo6464.github.io/weebo64-portfolio/)**
-
-### What You'll Find:
-
-✨ **Super Mario 64-Themed Design** - Nostalgic vibes with animated stars and painting frame avatar  
-🎯 **My Projects** - Check out Retro Rewind, Insane Kart Wii, and more  
-🔗 **Connect With Me** - Links to all my social media and communities  
-🎮 **Easter Eggs** - Hidden surprises for fellow gamers (try the Konami code!)  
-💬 **Live Discord Status** - See what I'm up to in real-time  
 
 ---
 
@@ -68,16 +52,6 @@ My portfolio website is built with love and inspired by Super Mario 64's iconic 
 - **Fully Responsive** - Works great on desktop, tablet, and mobile
 - **Real-time Discord Status** - See what I'm currently doing
 - **Friends Page** - Check out my awesome friends in the community
-
----
-
-## 🎮 Fun Stuff
-
-### Easter Egg Alert! 🥚
-
-Try entering the Konami code on my website: **↑ ↑ ↓ ↓ ← → ← → B A**
-
-You might just get a Power Star! ⭐
 
 ---
 
@@ -115,3 +89,4 @@ Made with 💜 by Weebo64
 ⭐ If you like my work, consider starring this repo! ⭐
 
 </div>
+
