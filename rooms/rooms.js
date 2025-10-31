@@ -277,8 +277,9 @@ function createRoomCard(group, index) {
         joinableClass = 'joinable';
     }
 
+    const isPrivate = group.type === 'private';
     const averageVR = group.averageVR;
-    const averageVRText = averageVR !== null ? ` • Avg VR: ${averageVR}` : '';
+    const averageVRText = !isPrivate && averageVR !== null ? ` • Avg VR: ${averageVR}` : '';
 
     let raceStatusHTML = '';
     if (isInVoting) {
@@ -287,13 +288,15 @@ function createRoomCard(group, index) {
         raceStatusHTML = '<div class="race-status racing">🏁 Racing!</div>';
     }
 
+    const gamemodeHTML = !isPrivate ? `<span class="gamemode">🎮 ${gamemodeName}</span>` : '';
+
     card.innerHTML = `
         <div class="room-header">
             <div class="room-title-section">
                 <div class="room-title">Room ${index + 1}</div>
                 <div class="room-meta">
                     <span class="lobby-type ${lobbyClass}">${lobbyType}</span>
-                    <span class="gamemode">🎮 ${gamemodeName}</span>
+                    ${gamemodeHTML}
                     <span class="time-active">⏱️ ${timeActive}</span>
                 </div>
             </div>
@@ -312,7 +315,7 @@ function createRoomCard(group, index) {
             <span class="toggle-text">Show Players (${playerCount})</span>
         </div>
         <div class="players-list collapsed">
-            ${playersArray.map(player => createPlayerHTML(player)).join('')}
+            ${playersArray.map(player => createPlayerHTML(player, isPrivate)).join('')}
         </div>
     `;
 
@@ -405,7 +408,7 @@ async function getMiiImageForPlayer(player) {
     return fallbackUrl;
 }
 
-function createPlayerHTML(player) {
+function createPlayerHTML(player, isPrivateRoom = false) {
     const miiName = (player.mii && player.mii[0] && player.mii[0].name) || player.name || 'Unknown Player';
     const fc = player.fc || 'N/A';
     const vr = player.ev || 0;
@@ -415,6 +418,16 @@ function createPlayerHTML(player) {
     const fcClass = isOpenhost ? 'fc-code openhost' : 'fc-code';
 
     const placeholderImage = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="70" height="70"%3E%3Crect fill="%23ddd" width="70" height="70"/%3E%3Ctext fill="%23999" x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="sans-serif" font-size="14"%3E...%3C/text%3E%3C/svg%3E';
+
+    const vrBrStats = !isPrivateRoom ? `
+                    <div class="stat">
+                        <span class="stat-label-small">VR:</span>
+                        <span class="stat-value-small">${vr}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label-small">BR:</span>
+                        <span class="stat-value-small">${br}</span>
+                    </div>` : '';
 
     return `
         <div class="player-item" data-fc="${fc}">
@@ -426,14 +439,7 @@ function createPlayerHTML(player) {
                         <span class="stat-label-small">FC:</span>
                         <span class="${fcClass}" ${isOpenhost ? 'title="Openhost Enabled"' : ''}>${fc}</span>
                     </div>
-                    <div class="stat">
-                        <span class="stat-label-small">VR:</span>
-                        <span class="stat-value-small">${vr}</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-label-small">BR:</span>
-                        <span class="stat-value-small">${br}</span>
-                    </div>
+                    ${vrBrStats}
                 </div>
             </div>
         </div>
