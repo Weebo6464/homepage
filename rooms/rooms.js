@@ -181,6 +181,18 @@ async function displayRooms(groups) {
 
     let totalPlayers = 0;
 
+    groups.forEach(group => {
+        if (!group.players || Object.keys(group.players).length === 0) {
+            group.averageVR = null;
+        } else {
+            const players = Object.values(group.players);
+            const playersWithVR = players.filter(player => player.ev !== undefined);
+            const totalVR = playersWithVR.reduce((sum, player) => sum + Number(player.ev || 0), 0);
+            const averageVR = playersWithVR.length > 0 ? totalVR / playersWithVR.length : 0;
+            group.averageVR = Math.round(averageVR);
+        }
+    });
+
     groups.forEach((group, index) => {
         const roomCard = createRoomCard(group, index);
         roomsGrid.appendChild(roomCard);
@@ -265,6 +277,16 @@ function createRoomCard(group, index) {
         joinableClass = 'joinable';
     }
 
+    const averageVR = group.averageVR;
+    const averageVRText = averageVR !== null ? ` • Avg VR: ${averageVR}` : '';
+
+    let raceStatusHTML = '';
+    if (isInVoting) {
+        raceStatusHTML = '<div class="race-status voting">🗳️ In Voting!</div>';
+    } else if (isInRace) {
+        raceStatusHTML = '<div class="race-status racing">🏁 Racing!</div>';
+    }
+
     card.innerHTML = `
         <div class="room-header">
             <div class="room-title-section">
@@ -278,16 +300,34 @@ function createRoomCard(group, index) {
             <div class="room-info">
                 <div class="room-id">ID: ${roomId}</div>
                 <div class="player-count ${statusClass}">${playerStatus}</div>
-                <div class="joinable-status ${joinableClass}">
+                ${raceStatusHTML}
+                <div class="joinable-status ${joinableClass}" title="${averageVR !== null ? `Average VR: ${averageVR}` : ''}">
                     <span class="status-dot"></span>
-                    ${joinableStatus}
+                    ${joinableStatus}${averageVRText}
                 </div>
             </div>
         </div>
-        <div class="players-list">
+        <div class="players-toggle">
+            <span class="toggle-icon">▼</span>
+            <span class="toggle-text">Show Players (${playerCount})</span>
+        </div>
+        <div class="players-list collapsed">
             ${playersArray.map(player => createPlayerHTML(player)).join('')}
         </div>
     `;
+
+    const toggleBtn = card.querySelector('.players-toggle');
+    const playersList = card.querySelector('.players-list');
+    const toggleIcon = card.querySelector('.toggle-icon');
+    const toggleText = card.querySelector('.toggle-text');
+
+    toggleBtn.addEventListener('click', () => {
+        playersList.classList.toggle('collapsed');
+        toggleIcon.textContent = playersList.classList.contains('collapsed') ? '▼' : '▲';
+        toggleText.textContent = playersList.classList.contains('collapsed')
+            ? `Show Players (${playerCount})`
+            : `Hide Players (${playerCount})`;
+    });
 
     return card;
 }
@@ -400,9 +440,106 @@ function createPlayerHTML(player) {
     `;
 }
 
+let hasTriggered100 = false;
+let hasTriggered67 = false;
+
 function updateStats(roomCount, playerCount) {
     document.getElementById('totalRooms').textContent = roomCount;
     document.getElementById('totalPlayers').textContent = playerCount;
+
+    const playersStatCard = document.getElementById('totalPlayers').closest('.stat-card');
+    let existingEasterEgg = playersStatCard.querySelector('.easter-egg');
+    if (existingEasterEgg) {
+        existingEasterEgg.remove();
+    }
+
+    let easterEggText = '';
+    let easterEggClass = '';
+
+    if (playerCount === 67) {
+        easterEggText = '🏀 six-seven! 🏀';
+        easterEggClass = 'easter-egg-67';
+
+        if (!hasTriggered67) {
+            hasTriggered67 = true;
+            trigger67Hands(playersStatCard);
+            setTimeout(() => {
+                hasTriggered67 = false;
+            }, 60000);
+        }
+    } else if (playerCount === 69) {
+        easterEggText = '😏 haha funny number';
+        easterEggClass = 'easter-egg-69';
+    } else if (playerCount >= 100) {
+        easterEggText = '🎉 CENTURY CELEBRATION! 🎉';
+        easterEggClass = 'easter-egg-100';
+
+        if (!hasTriggered100) {
+            hasTriggered100 = true;
+            triggerCelebration();
+            setTimeout(() => {
+                hasTriggered100 = false;
+            }, 60000);
+        }
+    }
+
+    if (easterEggText) {
+        const easterEgg = document.createElement('div');
+        easterEgg.className = `easter-egg ${easterEggClass}`;
+        easterEgg.textContent = easterEggText;
+        playersStatCard.appendChild(easterEgg);
+    }
+}
+
+function trigger67Hands(statCard) {
+    const leftHand = document.createElement('img');
+    leftHand.className = 'hand-67 hand-left';
+    leftHand.src = 'image/hand.png';
+    leftHand.alt = 'hand';
+
+    const rightHand = document.createElement('img');
+    rightHand.className = 'hand-67 hand-right';
+    rightHand.src = 'image/hand.png';
+    rightHand.alt = 'hand';
+
+    statCard.appendChild(leftHand);
+    statCard.appendChild(rightHand);
+
+    setTimeout(() => {
+        leftHand.remove();
+        rightHand.remove();
+    }, 10000);
+}
+
+function triggerCelebration() {
+    document.body.classList.add('celebrating');
+
+    createConfetti();
+
+    setTimeout(() => {
+        document.body.classList.remove('celebrating');
+    }, 10000);
+}
+
+function createConfetti() {
+    const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#e67e22'];
+    const confettiCount = 100;
+
+    for (let i = 0; i < confettiCount; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = Math.random() * 0.5 + 's';
+            confetti.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(confetti);
+
+            setTimeout(() => {
+                confetti.remove();
+            }, 10000);
+        }, i * 30);
+    }
 }
 
 function escapeHtml(text) {
