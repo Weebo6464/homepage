@@ -93,29 +93,6 @@ window.addEventListener('resize', initStars);
 initStars();
 animateStars();
 
-const themeToggle = document.getElementById('theme-toggle');
-const themeIcon = document.querySelector('.theme-icon');
-
-function setTheme(theme) {
-    if (theme === 'light') {
-        document.body.classList.add('light-mode');
-        themeIcon.textContent = '☀️';
-        localStorage.setItem('theme', 'light');
-    } else {
-        document.body.classList.remove('light-mode');
-        themeIcon.textContent = '🌙';
-        localStorage.setItem('theme', 'dark');
-    }
-}
-
-const savedTheme = localStorage.getItem('theme') || 'dark';
-setTheme(savedTheme);
-
-themeToggle.addEventListener('click', () => {
-    const currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
-    setTheme(currentTheme === 'light' ? 'dark' : 'light');
-});
-
 async function fetchRooms() {
     const loading = document.getElementById('loading');
     const error = document.getElementById('error');
@@ -175,7 +152,10 @@ async function fetchRooms() {
 
 
 
+let allGroups = [];
+
 async function displayRooms(groups) {
+    allGroups = groups;
     const roomsGrid = document.getElementById('roomsGrid');
     roomsGrid.innerHTML = '';
 
@@ -193,7 +173,20 @@ async function displayRooms(groups) {
         }
     });
 
-    groups.forEach((group, index) => {
+    const publicOnlyFilter = document.getElementById('publicOnlyFilter');
+    const showPublicOnly = publicOnlyFilter && publicOnlyFilter.checked;
+
+    const filteredGroups = showPublicOnly
+        ? groups.filter(group => group.type !== 'private')
+        : groups;
+
+    if (filteredGroups.length === 0) {
+        roomsGrid.innerHTML = '<div class="no-rooms">🏁 No rooms match the current filter</div>';
+        updateStats(0, 0);
+        return;
+    }
+
+    filteredGroups.forEach((group, index) => {
         const roomCard = createRoomCard(group, index);
         roomsGrid.appendChild(roomCard);
         if (group.players) {
@@ -201,9 +194,9 @@ async function displayRooms(groups) {
         }
     });
 
-    updateStats(groups.length, totalPlayers);
+    updateStats(filteredGroups.length, totalPlayers);
 
-    await loadMiiImages(groups);
+    await loadMiiImages(filteredGroups);
 }
 
 async function loadMiiImages(groups) {
@@ -429,15 +422,18 @@ function createPlayerHTML(player, isPrivateRoom = false) {
                         <span class="stat-value-small">${br}</span>
                     </div>` : '';
 
+    const openhostTooltip = isOpenhost ? '<span class="openhost-tooltip">Openhost Enabled</span>' : '';
+
     return `
         <div class="player-item" data-fc="${fc}">
             <img src="${placeholderImage}" alt="${escapeHtml(miiName)}" class="mii-image" data-player-fc="${fc}">
             <div class="player-info">
                 <div class="player-name">${escapeHtml(miiName)}</div>
                 <div class="player-stats">
-                    <div class="stat">
+                    <div class="stat fc-stat">
                         <span class="stat-label-small">FC:</span>
-                        <span class="${fcClass}" ${isOpenhost ? 'title="Openhost Enabled"' : ''}>${fc}</span>
+                        <span class="${fcClass}" ${isOpenhost ? 'data-openhost="true"' : ''}>${fc}</span>
+                        ${openhostTooltip}
                     </div>
                     ${vrBrStats}
                 </div>
@@ -553,6 +549,34 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const publicOnlyFilter = document.getElementById('publicOnlyFilter');
+    if (publicOnlyFilter) {
+        publicOnlyFilter.addEventListener('change', () => {
+            if (allGroups.length > 0) {
+                displayRooms(allGroups);
+            }
+        });
+    }
+});
+
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('openhost') && e.target.dataset.openhost === 'true') {
+        const tooltip = e.target.nextElementSibling;
+        if (tooltip && tooltip.classList.contains('openhost-tooltip')) {
+            tooltip.classList.toggle('show');
+
+            setTimeout(() => {
+                tooltip.classList.remove('show');
+            }, 3000);
+        }
+    } else {
+        document.querySelectorAll('.openhost-tooltip.show').forEach(tooltip => {
+            tooltip.classList.remove('show');
+        });
+    }
+});
 
 setInterval(() => {
     fetchRooms();
