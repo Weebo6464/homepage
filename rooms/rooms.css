@@ -363,13 +363,13 @@ body.celebrating .stat-card {
 .hand-left {
     left: -70px;
     top: 50%;
-    animation: handBounceLeft67 0.8s ease-in-out infinite;
+    animation: handBounceLeft67 0.27s ease-in-out infinite;
 }
 
 .hand-right {
     right: -70px;
     top: 50%;
-    animation: handBounceRight67 0.8s ease-in-out infinite;
+    animation: handBounceRight67 0.27s ease-in-out infinite;
     transform: scaleX(-1);
 }
 
