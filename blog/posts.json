@@ -1,5 +1,5 @@
 {
-  "_note": "This is Weebo64's personal blog data. Pull requests modifying posts will not be accepted. Feel free to fork and use this structure for your own blog!
+  "_note": "This is Weebo64's personal blog data. Pull requests modifying posts will not be accepted. Feel free to fork and use this structure for your own blog!",
   "posts": [
     {
       "id": 1,
@@ -10,4 +10,5 @@
     }
   ]
 }
+
 
