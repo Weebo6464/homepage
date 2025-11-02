@@ -113,19 +113,14 @@
     height: 100%;
     border-radius: 50%;
     border: 3px solid rgba(255, 223, 0, 0.5);
-    box-shadow: 
-        0 0 30px rgba(255, 223, 0, 0.4),
-        inset 0 0 20px rgba(255, 223, 0, 0.2);
+    box-shadow: 0 0 30px rgba(255, 223, 0, 0.4);
     transition: all 0.4s ease;
-    animation: float 3s ease-in-out infinite;
     object-fit: cover;
 }
 
 .friend-card:hover .avatar-image {
     transform: scale(1.1) rotate(5deg);
-    box-shadow: 
-        0 0 40px rgba(255, 223, 0, 0.6),
-        inset 0 0 30px rgba(255, 223, 0, 0.3);
+    box-shadow: 0 0 40px rgba(255, 223, 0, 0.6);
 }
 
 .discord-status-badge {
@@ -171,18 +166,13 @@
     font-weight: 700;
     color: #ffdf00;
     text-shadow: 0 0 20px rgba(255, 223, 0, 0.8);
-    box-shadow: 
-        0 0 30px rgba(255, 223, 0, 0.4),
-        inset 0 0 20px rgba(255, 223, 0, 0.2);
+    box-shadow: 0 0 30px rgba(255, 223, 0, 0.4);
     transition: all 0.4s ease;
-    animation: float 3s ease-in-out infinite;
 }
 
 .friend-card:hover .avatar-placeholder {
     transform: scale(1.1) rotate(5deg);
-    box-shadow: 
-        0 0 40px rgba(255, 223, 0, 0.6),
-        inset 0 0 30px rgba(255, 223, 0, 0.3);
+    box-shadow: 0 0 40px rgba(255, 223, 0, 0.6);
 }
 
 .friend-info {

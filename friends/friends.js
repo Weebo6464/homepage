@@ -84,16 +84,17 @@ document.querySelectorAll('.friend-card').forEach((card, index) => {
         avatar.style.animationDelay = `${index * 0.3}s`;
     }
 
+    // Reduced sparkle count on hover for better performance
     card.addEventListener('mouseenter', function () {
         const rect = this.getBoundingClientRect();
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 2; i++) {
             setTimeout(() => {
                 const x = rect.left + Math.random() * rect.width;
                 const y = rect.top + Math.random() * rect.height;
                 if (typeof createSparkle === 'function') {
                     createSparkle(x, y);
                 }
-            }, i * 100);
+            }, i * 150);
         }
     });
 });
