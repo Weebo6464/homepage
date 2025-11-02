@@ -70,14 +70,20 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Throttle scroll event for better performance
+let scrollTimeout;
 window.addEventListener('scroll', () => {
-    const header = document.querySelector('header');
-    const scrolled = window.pageYOffset;
-    if (header) {
-        header.style.transform = `translateY(${scrolled * 0.3}px)`;
-        header.style.opacity = 1 - (scrolled / 500);
-    }
-});
+    if (scrollTimeout) return;
+    scrollTimeout = setTimeout(() => {
+        const header = document.querySelector('header');
+        const scrolled = window.pageYOffset;
+        if (header) {
+            header.style.transform = `translateY(${scrolled * 0.3}px)`;
+            header.style.opacity = 1 - (scrolled / 500);
+        }
+        scrollTimeout = null;
+    }, 16); // ~60fps
+}, { passive: true });
 
 const observerOptions = {
     threshold: 0.1,
@@ -100,9 +106,15 @@ document.querySelectorAll('.skill-card, .project-card, .link-card').forEach((ele
     observer.observe(element);
 });
 
+// Throttle sparkle creation for better performance
+let lastSparkleTime = 0;
+const sparkleThrottle = 200; // ms
+
 document.addEventListener('mousemove', (e) => {
-    if (Math.random() > 0.95) {
+    const now = Date.now();
+    if (Math.random() > 0.98 && now - lastSparkleTime > sparkleThrottle) {
         createSparkle(e.clientX, e.clientY);
+        lastSparkleTime = now;
     }
 });
 
@@ -117,13 +129,14 @@ function createSparkle(x, y) {
     }, 1000);
 }
 
+// Reduced frequency of random sparkles
 setInterval(() => {
-    if (Math.random() > 0.8) {
+    if (Math.random() > 0.9) {
         const x = Math.random() * window.innerWidth;
         const y = Math.random() * window.innerHeight;
         createSparkle(x, y);
     }
-}, 3000);
+}, 5000);
 
 document.querySelectorAll('.skill-card, .project-card, .link-card').forEach(card => {
     card.addEventListener('mouseenter', function () {

@@ -27,14 +27,7 @@ class Star {
     draw() {
         ctx.save();
         ctx.globalAlpha = this.opacity;
-        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 3);
-        gradient.addColorStop(0, '#ffffff');
-        gradient.addColorStop(0.5, '#ffdf00');
-        gradient.addColorStop(1, 'transparent');
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
-        ctx.fill();
+        // Simplified drawing without gradient for better performance
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -59,15 +52,8 @@ class ShootingStar {
     draw() {
         ctx.save();
         ctx.globalAlpha = this.opacity;
-        const gradient = ctx.createLinearGradient(
-            this.x, this.y,
-            this.x - Math.cos(this.angle) * this.length,
-            this.y - Math.sin(this.angle) * this.length
-        );
-        gradient.addColorStop(0, '#ffffff');
-        gradient.addColorStop(0.5, '#ffdf00');
-        gradient.addColorStop(1, 'transparent');
-        ctx.strokeStyle = gradient;
+        // Simplified shooting star without gradient for better performance
+        ctx.strokeStyle = '#ffdf00';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(this.x, this.y);
@@ -113,31 +99,29 @@ class PowerStar {
         ctx.rotate(this.rotation);
         const pulse = Math.sin(this.pulsePhase) * 0.2 + 0.8;
         const size = this.size * pulse;
-        ctx.globalAlpha = this.opacity * 0.5;
-        const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 1.5);
-        gradient.addColorStop(0, 'rgba(255, 223, 0, 0.8)');
-        gradient.addColorStop(0.5, 'rgba(255, 223, 0, 0.4)');
-        gradient.addColorStop(1, 'transparent');
-        ctx.fillStyle = gradient;
+        // Simplified glow effect for better performance
+        ctx.globalAlpha = this.opacity * 0.3;
+        ctx.fillStyle = 'rgba(255, 223, 0, 0.5)';
         ctx.beginPath();
-        ctx.arc(0, 0, size * 1.5, 0, Math.PI * 2);
+        ctx.arc(0, 0, size * 1.2, 0, Math.PI * 2);
         ctx.fill();
         ctx.globalAlpha = this.opacity;
         ctx.drawImage(this.image, -size / 2, -size / 2, size, size);
         ctx.restore();
     }
 }
-for (let i = 0; i < 200; i++) {
+// Reduced star count for better performance
+for (let i = 0; i < 100; i++) {
     stars.push(new Star());
 }
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 3; i++) {
     powerStars.push(new PowerStar());
 }
 setInterval(() => {
-    if (Math.random() > 0.7) {
+    if (Math.random() > 0.8) { // Reduced shooting star frequency
         shootingStars.push(new ShootingStar());
     }
-}, 2000);
+}, 3000);
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     stars.forEach(star => {
@@ -156,12 +140,13 @@ function animate() {
     requestAnimationFrame(animate);
 }
 animate();
+// Reduced click effect stars for better performance
 canvas.addEventListener('click', (e) => {
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    for (let i = 0; i < 10; i++) {
-        const angle = (Math.PI * 2 * i) / 10;
+    for (let i = 0; i < 5; i++) {
+        const angle = (Math.PI * 2 * i) / 5;
         const distance = Math.random() * 50 + 20;
         const newStar = new Star();
         newStar.x = x + Math.cos(angle) * distance;
