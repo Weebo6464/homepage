@@ -4,11 +4,23 @@
     {
       "id": 1,
       "title": "Welcome to my blog!",
-      "content": "This is my first blog post. I'll share updates about my projects, modding adventures, and whatever else is on my mind. Stay tuned!",
+      "content": "This is my first blog post. I'll be sharing updates about my projects, modding adventures, and whatever else is on my mind. Stay tuned!",
       "date": "2025-11-02",
-      "tags": ["general", "announcement"]
+      "tags": [
+        "general",
+        "announcement"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "rough day",
+      "content": "today wasnt really a great day for me. my mental health gotten worse and im getting sad every single time.\n\ni was able to talk to my friends on the Insane Kart Wii Discord Server and watched them play the game. i listen to some music and played some retro rewind.\n\nit helped a bit but yeah. just wanted to get this off my chest i guess.",
+      "date": "2025-11-02",
+      "tags": [
+        "vent",
+        "modding",
+        "fun"
+      ]
     }
   ]
 }
-
-
