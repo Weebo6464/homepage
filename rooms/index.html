@@ -29,6 +29,10 @@
                 <h1>Retro Rewind</h1>
                 <p class="subtitle">Online Rooms</p>
                 <p class="tagline">Live player tracking and room statistics</p>
+                <button class="report-button" id="reportButton">
+                    <span class="report-icon">⚠️</span>
+                    <span class="report-text">Report Player</span>
+                </button>
             </div>
             <div class="stats-container">
                 <div class="stat-card">
@@ -78,6 +82,41 @@
                     href="https://github.com/Weebo6464/homepage/tree/main/rooms" target="_blank"
                     rel="noopener noreferrer">Page Source</a></p>
         </footer>
+    </div>
+
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Report Player</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <form id="reportForm">
+                <div class="form-group">
+                    <label for="reportFC">Friend Code *</label>
+                    <input type="text" id="reportFC" name="fc" placeholder="XXXX-XXXX-XXXX" required maxlength="14">
+                </div>
+                <div class="form-group">
+                    <label for="reportMiiName">Mii Name *</label>
+                    <input type="text" id="reportMiiName" name="miiName" placeholder="Enter Mii name" required
+                        maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="reportReason">Reason *</label>
+                    <textarea id="reportReason" name="reason" placeholder="Describe the issue..." required
+                        rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="reportFile">Upload Evidence (Image/Video)</label>
+                    <input type="file" id="reportFile" name="file" accept="image/*,video/*">
+                    <small class="file-info">Max 8MB - Images or videos only</small>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelReport">Cancel</button>
+                    <button type="submit" class="btn-submit">Submit Report</button>
+                </div>
+            </form>
+            <div id="reportStatus" class="report-status"></div>
+        </div>
     </div>
 
     <script src="rooms.js"></script>

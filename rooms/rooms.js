@@ -59,7 +59,7 @@ function initStars() {
     canvas.height = window.innerHeight;
 
     stars = [];
-    const numStars = 100; // Reduced from 200
+    const numStars = 100;
 
     for (let i = 0; i < numStars; i++) {
         stars.push({
@@ -77,7 +77,7 @@ function animateStars() {
 
     stars.forEach(star => {
         ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-        ctx.fillRect(star.x, star.y, star.radius, star.radius); // Use fillRect instead of arc for better performance
+        ctx.fillRect(star.x, star.y, star.radius, star.radius);
 
         star.opacity += star.speed * 0.01;
         if (star.opacity > 1 || star.opacity < 0) {
@@ -91,7 +91,7 @@ function animateStars() {
 let resizeTimeout;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(initStars, 250); // Debounce resize
+    resizeTimeout = setTimeout(initStars, 250);
 });
 
 initStars();
@@ -214,7 +214,6 @@ async function loadMiiImages(groups) {
         }
     });
 
-    // Load images in batches to avoid overwhelming the browser
     const batchSize = 10;
     for (let i = 0; i < allPlayers.length; i += batchSize) {
         const batch = allPlayers.slice(i, i + batchSize);
@@ -592,3 +591,152 @@ setInterval(() => {
 }, 60000);
 
 fetchRooms();
+
+const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1434643639476420889/HLW7ffk1B0-4UeGzl-8UsaLvqLjpaC7qtHz1dI8-HWWwW5b5HCgsA96_vJkExkm5Yu5A';
+
+const reportButton = document.getElementById('reportButton');
+const reportModal = document.getElementById('reportModal');
+const closeModal = document.getElementById('closeModal');
+const cancelReport = document.getElementById('cancelReport');
+const reportForm = document.getElementById('reportForm');
+const reportStatus = document.getElementById('reportStatus');
+
+function openReportModal() {
+    reportModal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeReportModal() {
+    reportModal.classList.remove('show');
+    document.body.style.overflow = '';
+    reportForm.reset();
+    reportStatus.style.display = 'none';
+}
+
+reportButton.addEventListener('click', openReportModal);
+closeModal.addEventListener('click', closeReportModal);
+cancelReport.addEventListener('click', closeReportModal);
+
+reportModal.addEventListener('click', (e) => {
+    if (e.target === reportModal) {
+        closeReportModal();
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && reportModal.classList.contains('show')) {
+        closeReportModal();
+    }
+});
+
+const fcInput = document.getElementById('reportFC');
+fcInput.addEventListener('input', (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, '');
+    if (value.length > 12) value = value.slice(0, 12);
+
+    let formatted = '';
+    for (let i = 0; i < value.length; i++) {
+        if (i > 0 && i % 4 === 0) formatted += '-';
+        formatted += value[i];
+    }
+    e.target.value = formatted;
+});
+
+reportForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const submitBtn = reportForm.querySelector('.btn-submit');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    reportStatus.style.display = 'none';
+
+    const fc = document.getElementById('reportFC').value;
+    const miiName = document.getElementById('reportMiiName').value;
+    const reason = document.getElementById('reportReason').value;
+    const fileInput = document.getElementById('reportFile');
+    const file = fileInput.files[0];
+
+    try {
+        if (file && file.size > 8 * 1024 * 1024) {
+            throw new Error('File size must be less than 8MB');
+        }
+
+        const embed = {
+            title: '⚠️ Player Report',
+            color: 0xe74c3c,
+            fields: [
+                {
+                    name: '👤 Mii Name',
+                    value: miiName,
+                    inline: true
+                },
+                {
+                    name: '🎮 Friend Code',
+                    value: fc,
+                    inline: true
+                },
+                {
+                    name: '📝 Reason',
+                    value: reason,
+                    inline: false
+                }
+            ],
+            timestamp: new Date().toISOString(),
+            footer: {
+                text: 'Retro Rewind Report System'
+            }
+        };
+
+        if (file) {
+            const formData = new FormData();
+
+            const payload = {
+                embeds: [embed]
+            };
+
+            formData.append('payload_json', JSON.stringify(payload));
+            formData.append('file', file);
+
+            const response = await fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit report');
+            }
+        } else {
+            const response = await fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    embeds: [embed]
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit report');
+            }
+        }
+
+        reportStatus.className = 'report-status success';
+        reportStatus.textContent = '✅ Report submitted successfully!';
+        reportStatus.style.display = 'block';
+
+        setTimeout(() => {
+            closeReportModal();
+        }, 2000);
+
+    } catch (error) {
+        console.error('Error submitting report:', error);
+        reportStatus.className = 'report-status error';
+        reportStatus.textContent = '❌ ' + (error.message || 'Failed to submit report. Please try again.');
+        reportStatus.style.display = 'block';
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Report';
+    }
+});
