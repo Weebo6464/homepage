@@ -1,12 +1,13 @@
 {
-  "_note": "This is Weebo64's personal blog data. Pull requests modifying posts will not be accepted. Feel free to fork and use this structure for your own blog!",
+  "_note": "This is Weebo64's personal blog data. Pull requests modifying posts will not be accepted. Feel free to fork and use this structure for your own blog!
   "posts": [
     {
       "id": 1,
       "title": "Welcome to my blog!",
-      "content": "This is my first blog post. I'll be sharing updates about my projects, modding adventures, and whatever else is on my mind. Stay tuned!",
-      "date": "2025-02-11",
+      "content": "This is my first blog post. I'll share updates about my projects, modding adventures, and whatever else is on my mind. Stay tuned!",
+      "date": "2025-11-02",
       "tags": ["general", "announcement"]
     }
   ]
 }
+
