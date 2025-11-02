@@ -303,8 +303,28 @@ header h1 {
     font-size: 1.1rem;
     color: #d1d5db;
     line-height: 1.8;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     white-space: pre-wrap;
+}
+
+.read-more-btn {
+    background: linear-gradient(135deg, rgba(255, 223, 0, 0.2) 0%, rgba(255, 107, 107, 0.2) 100%);
+    border: 2px solid rgba(255, 223, 0, 0.4);
+    color: #ffdf00;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+    display: inline-block;
+}
+
+.read-more-btn:hover {
+    background: linear-gradient(135deg, rgba(255, 223, 0, 0.3) 0%, rgba(255, 107, 107, 0.3) 100%);
+    border-color: rgba(255, 223, 0, 0.6);
+    transform: translateX(5px);
 }
 
 .post-tags {
@@ -469,6 +489,16 @@ body.light-mode .post-content {
 
 body.light-mode .post-title {
     color: #ff6b6b;
+}
+
+body.light-mode .read-more-btn {
+    background: linear-gradient(135deg, rgba(255, 223, 0, 0.3) 0%, rgba(255, 107, 107, 0.3) 100%);
+    color: #ff6b6b;
+    border-color: rgba(255, 223, 0, 0.5);
+}
+
+body.light-mode .read-more-btn:hover {
+    background: linear-gradient(135deg, rgba(255, 223, 0, 0.4) 0%, rgba(255, 107, 107, 0.4) 100%);
 }
 
 body.light-mode .tag-filter {

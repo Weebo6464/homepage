@@ -113,18 +113,45 @@ function displayPosts(posts) {
         return;
     }
     
-    container.innerHTML = posts.map(post => `
-        <article class="post-card">
-            <div class="post-header">
-                <h2 class="post-title">${escapeHtml(post.title)}</h2>
-                <span class="post-date">${formatDate(post.date)}</span>
-            </div>
-            <div class="post-content">${escapeHtml(post.content)}</div>
-            <div class="post-tags">
-                ${post.tags.map(tag => `<span class="post-tag">#${escapeHtml(tag)}</span>`).join('')}
-            </div>
-        </article>
-    `).join('');
+    container.innerHTML = posts.map(post => {
+        const content = escapeHtml(post.content);
+        const isLong = content.length > 300;
+        const preview = isLong ? content.substring(0, 300) + '...' : content;
+        
+        return `
+            <article class="post-card" data-post-id="${post.id}">
+                <div class="post-header">
+                    <h2 class="post-title">${escapeHtml(post.title)}</h2>
+                    <span class="post-date">${formatDate(post.date)}</span>
+                </div>
+                <div class="post-content">
+                    <div class="post-preview">${preview}</div>
+                    ${isLong ? `<div class="post-full" style="display: none;">${content}</div>` : ''}
+                </div>
+                ${isLong ? '<button class="read-more-btn" onclick="togglePost(this)">Read more →</button>' : ''}
+                <div class="post-tags">
+                    ${post.tags.map(tag => `<span class="post-tag">#${escapeHtml(tag)}</span>`).join('')}
+                </div>
+            </article>
+        `;
+    }).join('');
+}
+
+function togglePost(button) {
+    const card = button.closest('.post-card');
+    const preview = card.querySelector('.post-preview');
+    const full = card.querySelector('.post-full');
+    
+    if (full.style.display === 'none') {
+        preview.style.display = 'none';
+        full.style.display = 'block';
+        button.textContent = 'Show less ←';
+    } else {
+        preview.style.display = 'block';
+        full.style.display = 'none';
+        button.textContent = 'Read more →';
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
 }
 
 function formatDate(dateString) {
