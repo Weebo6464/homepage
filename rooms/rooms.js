@@ -52,13 +52,14 @@ const GAMEMODE_MAP = {
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
 let stars = [];
+let animationFrameId = null;
 
 function initStars() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
     stars = [];
-    const numStars = 200;
+    const numStars = 100; // Reduced from 200
 
     for (let i = 0; i < numStars; i++) {
         stars.push({
@@ -75,10 +76,8 @@ function animateStars() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     stars.forEach(star => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-        ctx.fill();
+        ctx.fillRect(star.x, star.y, star.radius, star.radius); // Use fillRect instead of arc for better performance
 
         star.opacity += star.speed * 0.01;
         if (star.opacity > 1 || star.opacity < 0) {
@@ -86,10 +85,15 @@ function animateStars() {
         }
     });
 
-    requestAnimationFrame(animateStars);
+    animationFrameId = requestAnimationFrame(animateStars);
 }
 
-window.addEventListener('resize', initStars);
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(initStars, 250); // Debounce resize
+});
+
 initStars();
 animateStars();
 
@@ -210,12 +214,17 @@ async function loadMiiImages(groups) {
         }
     });
 
-    for (const player of allPlayers) {
-        const imageUrl = await getMiiImageForPlayer(player);
-        const imgElement = document.querySelector(`img[data-player-fc="${player.fc}"]`);
-        if (imgElement) {
-            imgElement.src = imageUrl;
-        }
+    // Load images in batches to avoid overwhelming the browser
+    const batchSize = 10;
+    for (let i = 0; i < allPlayers.length; i += batchSize) {
+        const batch = allPlayers.slice(i, i + batchSize);
+        await Promise.all(batch.map(async player => {
+            const imageUrl = await getMiiImageForPlayer(player);
+            const imgElement = document.querySelector(`img[data-player-fc="${player.fc}"]`);
+            if (imgElement) {
+                imgElement.src = imageUrl;
+            }
+        }));
     }
 }
 
