@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "icon": "💛",
+        "title": "Noticed by the Creator!",
+        "date": "November 2nd, 2025",
+        "description": "Nexus received a liked comment from Smith Hioka (スミス･ヒオカ), the legendary creator of Akita Neru! A dream come true moment for any Vocaloid fan. GGs Nexus, you made it!",
+        "participants": [
+            "Nexus (theodor_s_hafstad)"
+        ],
+        "images": [
+            "images/nexus-hioka-profile.png",
+            "images/nexus-hioka-like.png"
+        ]
+    }
+]
