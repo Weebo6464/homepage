@@ -642,6 +642,29 @@ fcInput.addEventListener('input', (e) => {
     e.target.value = formatted;
 });
 
+const categorySelect = document.getElementById('reportCategory');
+const otherDescriptionGroup = document.getElementById('otherDescriptionGroup');
+const otherDescriptionInput = document.getElementById('reportOtherDescription');
+const additionalDetailsGroup = document.getElementById('additionalDetailsGroup');
+
+categorySelect.addEventListener('change', (e) => {
+    if (e.target.value === 'other') {
+        otherDescriptionGroup.style.display = 'block';
+        otherDescriptionInput.required = true;
+        additionalDetailsGroup.style.display = 'block';
+    } else if (e.target.value === '') {
+        otherDescriptionGroup.style.display = 'none';
+        otherDescriptionInput.required = false;
+        otherDescriptionInput.value = '';
+        additionalDetailsGroup.style.display = 'none';
+    } else {
+        otherDescriptionGroup.style.display = 'none';
+        otherDescriptionInput.required = false;
+        otherDescriptionInput.value = '';
+        additionalDetailsGroup.style.display = 'none';
+    }
+});
+
 reportForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -653,7 +676,9 @@ reportForm.addEventListener('submit', async (e) => {
 
     const fc = document.getElementById('reportFC').value;
     const miiName = document.getElementById('reportMiiName').value;
-    const reason = document.getElementById('reportReason').value;
+    const category = document.getElementById('reportCategory').value;
+    const otherDescription = document.getElementById('reportOtherDescription').value;
+    const additionalDetails = document.getElementById('reportReason').value;
     const fileInput = document.getElementById('reportFile');
     const file = fileInput.files[0];
 
@@ -662,26 +687,56 @@ reportForm.addEventListener('submit', async (e) => {
             throw new Error('File size must be less than 8MB');
         }
 
+        // Category idea by ImZeraora
+        const categoryLabels = {
+            'offensive-mii-name': '🚫 Offensive Mii Name',
+            'cheating': '🎮 Cheating',
+            'emulator-speedup': '⚡ Emulator Speed Up',
+            'trolling': '😈 Trolling',
+            'targeting': '🎯 Targeting',
+            'other': '❓ Other'
+        };
+
+        const categoryLabel = categoryLabels[category] || category;
+
+        const fields = [
+            {
+                name: '👤 Mii Name',
+                value: miiName,
+                inline: true
+            },
+            {
+                name: '🎮 Friend Code',
+                value: fc,
+                inline: true
+            },
+            {
+                name: '📋 Category',
+                value: categoryLabel,
+                inline: false
+            }
+        ];
+
+        if (category === 'other' && otherDescription) {
+            fields.push({
+                name: '📝 Description',
+                value: otherDescription,
+                inline: false
+            });
+        }
+
+        if (additionalDetails) {
+            fields.push({
+                name: '📄 Additional Details',
+                value: additionalDetails,
+                inline: false
+            });
+        }
+
         const embed = {
             title: '⚠️ Player Report',
             color: 0xe74c3c,
-            fields: [
-                {
-                    name: '👤 Mii Name',
-                    value: miiName,
-                    inline: true
-                },
-                {
-                    name: '🎮 Friend Code',
-                    value: fc,
-                    inline: true
-                },
-                {
-                    name: '📝 Reason',
-                    value: reason,
-                    inline: false
-                }
-            ],
+            fields: fields,
             timestamp: new Date().toISOString(),
             footer: {
                 text: 'Retro Rewind Report System'
