@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Rewind - Online Rooms</title>
+    <link rel="icon" type="image/png" href="../images/Weebo_logo.png">
+    <meta property="og:title" content="Retro Rewind - Online Rooms">
+    <meta property="og:description" content="View active Retro Rewind online rooms and players">
+    <meta name="theme-color" content="#ff6b6b">
+    <link rel="stylesheet" href="rooms.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <canvas id="stars"></canvas>
+
+    <a href="../" class="back-button">
+        <span class="back-icon">←</span>
+        <span class="back-text">Back to Home</span>
+    </a>
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Retro Rewind</h1>
+                <p class="subtitle">Online Rooms</p>
+                <p class="tagline">Live player tracking and room statistics</p>
+                <button class="report-button" id="reportButton">
+                    <span class="report-icon">⚠️</span>
+                    <span class="report-text">Report Player</span>
+                </button>
+            </div>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">🏠</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="totalRooms">0</span>
+                        <span class="stat-label">Active Rooms</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="totalPlayers">0</span>
+                        <span class="stat-label">Players Online</span>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-container">
+                <label class="filter-toggle">
+                    <input type="checkbox" id="publicOnlyFilter">
+                    <span class="filter-label">Show Public Lobbies Only</span>
+                </label>
+            </div>
+        </header>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading rooms...</p>
+        </div>
+
+        <div class="error" id="error" style="display: none;">
+            <div class="error-icon">⚠️</div>
+            <p>Failed to load rooms. Please try again later.</p>
+            <button class="retry-button" onclick="location.reload()">Retry</button>
+        </div>
+
+        <div class="rooms-section">
+            <div class="rooms-grid" id="roomsGrid"></div>
+        </div>
+
+        <footer>
+            <p>Made with 💜 by Weebo64 for <a href="https://wiki.tockdom.com/wiki/Retro_Rewind" target="_blank"
+                    rel="noopener noreferrer">Retro Rewind</a></p>
+            <p class="footer-note">Auto-refreshes every minute • <a href="http://rwfc.net/api/groups" target="_blank"
+                    rel="noopener noreferrer">API Endpoint</a> • <a href="https://wiki.tockdom.com/wiki/CTMKF"
+                    target="_blank" rel="noopener noreferrer">Chadderz's Terrible Mario Kart Font</a> • <a
+                    href="https://github.com/Weebo6464/homepage/tree/main/rooms" target="_blank"
+                    rel="noopener noreferrer">Page Source</a></p>
+        </footer>
+    </div>
+
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Report Player</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <form id="reportForm">
+                <div class="form-group">
+                    <label for="reportFC">Friend Code *</label>
+                    <input type="text" id="reportFC" name="fc" placeholder="XXXX-XXXX-XXXX" required maxlength="14">
+                </div>
+                <div class="form-group">
+                    <label for="reportMiiName">Mii Name *</label>
+                    <input type="text" id="reportMiiName" name="miiName" placeholder="Enter Mii name" required
+                        maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="reportCategory">Report Category *</label>
+                    <select id="reportCategory" name="category" required>
+                        <option value="">Select a category...</option>
+                        <option value="offensive-mii-name">Offensive Mii Name</option>
+                        <option value="cheating">Cheating</option>
+                        <option value="emulator-speedup">Emulator Speed Up</option>
+                        <option value="trolling">Trolling</option>
+                        <option value="targeting">Targeting</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group" id="otherDescriptionGroup" style="display: none;">
+                    <label for="reportOtherDescription">Please describe *</label>
+                    <textarea id="reportOtherDescription" name="otherDescription" placeholder="Describe the issue..." rows="3"></textarea>
+                </div>
+                <div class="form-group" id="additionalDetailsGroup" style="display: none;">
+                    <label for="reportReason">Additional Details (Optional)</label>
+                    <textarea id="reportReason" name="reason" placeholder="Add any additional information..." rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="reportFile">Upload Evidence (Image/Video)</label>
+                    <input type="file" id="reportFile" name="file" accept="image/*,video/*">
+                    <small class="file-info">Max 8MB - Images or videos only</small>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelReport">Cancel</button>
+                    <button type="submit" class="btn-submit">Submit Report</button>
+                </div>
+            </form>
+            <div id="reportStatus" class="report-status"></div>
+        </div>
+    </div>
+
+    <script src="rooms.js"></script>
+</body>
+
+</html>
