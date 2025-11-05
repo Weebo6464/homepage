@@ -260,8 +260,9 @@
 
     <script>
         // just making sure it has a clean URL :3
-        if (window.location.pathname.endsWith(/'index.html)) {
-            window.history.replaceState({}, '', window.location.pathname.replace('/index.html', '/'));
+        if (window.location.pathname.indexOf('/index.html') !== -1) {
+            const cleanPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/index.html') + 1);
+            window.history.replaceState({}, '', cleanPath);
         }
         
         const canvas = document.getElementById('stars');
@@ -323,4 +324,5 @@
 </body>
 
 </html>
+
 
