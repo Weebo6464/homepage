@@ -230,16 +230,16 @@
         <h1>MMR Overlay</h1>
         <p class="subtitle">Enter your Mogi name to view your MMR</p>
 
-        <form id="loginForm">
+        <form id="loginForm" onsubmit="return false;">
             <div class="form-group">
                 <label for="playerName">Mogi Name</label>
-                <input type="text" id="playerName" name="playerName" placeholder="Enter your name (e.g., 19:16)"
+                <input type="text" id="playerName" placeholder="Enter your name (e.g., 19:16)"
                     required autocomplete="off">
             </div>
 
             <div class="form-group">
                 <label for="leaderboard">Leaderboard</label>
-                <select id="leaderboard" name="leaderboard">
+                <select id="leaderboard">
                     <option value="xxwuMY">Retro Leaderboard</option>
                     <option value="ct">CT Leaderboard</option>
                 </select>
@@ -259,12 +259,12 @@
     </div>
 
     <script>
-        // just making sure it has a clean URL :3
+        // Clean URL - remove index.html if present
         if (window.location.pathname.indexOf('/index.html') !== -1) {
             const cleanPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/index.html') + 1);
             window.history.replaceState({}, '', cleanPath);
         }
-        
+
         const canvas = document.getElementById('stars');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -324,5 +324,3 @@
 </body>
 
 </html>
-
-
