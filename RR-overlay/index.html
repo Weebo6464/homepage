@@ -121,6 +121,37 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
+        select {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(52, 152, 219, 0.3);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%233498db' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            padding-right: 50px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: rgba(52, 152, 219, 0.6);
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
+        }
+
+        select option {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 10px;
+        }
+
         .btn-submit {
             width: 100%;
             padding: 15px 20px;
@@ -206,6 +237,14 @@
                     required autocomplete="off">
             </div>
 
+            <div class="form-group">
+                <label for="leaderboard">Leaderboard</label>
+                <select id="leaderboard" name="leaderboard">
+                    <option value="xxwuMY">Retro Leaderboard</option>
+                    <option value="ct">CT Leaderboard</option>
+                </select>
+            </div>
+
             <button type="submit" class="btn-submit">View My MMR</button>
         </form>
 
@@ -270,9 +309,10 @@
             e.preventDefault();
 
             const playerName = document.getElementById('playerName').value.trim();
+            const leaderboard = document.getElementById('leaderboard').value;
 
             if (playerName) {
-                window.location.href = `overlay.html?player=${encodeURIComponent(playerName)}`;
+                window.location.href = `overlay.html?player=${encodeURIComponent(playerName)}&leaderboard=${encodeURIComponent(leaderboard)}`;
             }
         });
     </script>
