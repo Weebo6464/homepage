@@ -259,7 +259,11 @@
     </div>
 
     <script>
-
+        // just making sure it has a clean URL :3
+        if (window.location.pathname.endsWith(/'index.html)) {
+            window.history.replaceState({}, '', window.location.pathname.replace('/index.html', '/'));
+        }
+        
         const canvas = document.getElementById('stars');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -319,3 +323,4 @@
 </body>
 
 </html>
+
