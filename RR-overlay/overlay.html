@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retro Rewind MMR Overlay</title>
+  <link rel="icon" type="image/png" href="../images/Weebo_logo.png">
+  <meta property="og:title" content="Retro Rewind MMR Overlay">
+  <meta property="og:description" content="View your Retro Rewind MMR rating in real-time">
+  <meta property="og:image" content="../images/Weebo_logo.png">
+  <meta name="theme-color" content="#3498db">
+  <style>
+    body {
+      background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.error-bg {
+      background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      background-size: 100% 200%;
+      animation: bgSlide 3s linear infinite;
+    }
+
+    @keyframes bgSlide {
+      0% {
+        background-position: 0% 0%;
+      }
+
+      100% {
+        background-position: 0% 100%;
+      }
+    }
+
+    #rank {
+      height: 80px;
+      width: auto;
+    }
+
+    #digits {
+      display: flex;
+      align-items: center;
+      height: 80px;
+      gap: 2px;
+    }
+
+    #digits img {
+      height: 80px;
+      width: 50px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .credits {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+      background: rgba(0, 0, 0, 0.3);
+      padding: 5px 10px;
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
+    }
+
+    .credits strong {
+      color: rgba(52, 152, 219, 0.8);
+    }
+
+    .error-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(180deg, #ffffff 0%, #f5f7fb 100%);
+      color: #3a3a3a;
+      padding: 35px 55px;
+      border-radius: 10px;
+      border: 4px solid #1a2844;
+      font-family: Arial, sans-serif;
+      font-size: 1.15rem;
+      text-align: left;
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.25);
+      display: none;
+      min-width: 550px;
+      max-width: 650px;
+      line-height: 1.9;
+      font-weight: 500;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: mkwZoomIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .error-emoji {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      display: block;
+      text-align: center;
+    }
+
+    .error-text {
+      color: #2a2a2a;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .error-text::before,
+    .error-text::after {
+      content: "■";
+      margin: 0 12px;
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .error-message>div:not(.error-text) {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .back-button {
+      margin-top: 20px;
+      padding: 10px 35px;
+      background: #f8f8f8;
+      border: 3px solid #1a2844;
+      border-radius: 6px;
+      color: #1a2844;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: fit-content;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .back-button:hover {
+      background: #eeeeee;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .back-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+
+    @keyframes mkwZoomIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+
+    .loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 5px solid rgba(52, 152, 219, 0.2);
+      border-top-color: #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-text {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 1.2rem;
+      color: #fff;
+      opacity: 0.8;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 0.8;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+    }
+
+    #rank,
+    #digits {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    #rank.loaded,
+    #digits.loaded {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loading-screen" id="loadingScreen">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading your MMR...</div>
+  </div>
+
+  <img id="rank" src="" alt="Rank">
+  <div id="digits"></div>
+
+  <div class="error-message" id="errorMessage">
+    <span class="error-emoji">❌</span>
+    <div class="error-text">Error!</div>
+    <div>you silly, this name doesn't exist in the api or u wrote something wrong x3 >w<< /div>
+        <a href="index.html" class="back-button">Try Again</a>
+    </div>
+
+    <script>
+      // Thank you Fendi for the mmr api
+      const urlParams = new URLSearchParams(window.location.search);
+      const playerName = urlParams.get('player') || '19:16';
+      const leaderboard = urlParams.get('leaderboard') || 'xxwuMY';
+
+      const MMR_API = `https://rr-overlay-026cabce5497.herokuapp.com/mmr?player=${encodeURIComponent(playerName)}&leaderboard=${leaderboard}`;
+
+      // some image folder. ignore it
+      const folderPath = "./images/";
+
+      const rankImages = [
+        { min: -2000, max: -1, file: "quartz.png" },
+        { min: 0, max: 1499, file: "opal.png" },
+        { min: 1500, max: 2999, file: "bronze.png" },
+        { min: 3000, max: 3999, file: "silver.png" },
+        { min: 4000, max: 4999, file: "gold.png" },
+        { min: 5000, max: 5999, file: "ruby.png" },
+        { min: 6000, max: 6999, file: "amethyst.png" },
+        { min: 7000, max: 7999, file: "diamond.png" },
+        { min: 8000, max: 8999, file: "master.png" },
+        { min: 9000, max: Infinity, file: "legend.png" }
+      ];
+
+      // zazaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aYYYYYYYYYY (it worked btw)
+
+      function showDigits(number) {
+        const digitsContainer = document.getElementById("digits");
+        digitsContainer.innerHTML = "";
+
+        const capped = Math.max(-2000, number);
+        const chars = capped.toString().split("");
+
+        chars.forEach(ch => {
+          const img = document.createElement("img");
+          totalImages++;
+
+          img.onload = () => {
+            imagesLoaded++;
+            checkAllLoaded();
+          };
+          img.onerror = () => {
+            imagesLoaded++;
+            checkAllLoaded();
+          };
+
+          if (ch >= "0" && ch <= "9") {
+            img.src = `${folderPath}${ch}.png`;
+          } else if (ch === "-") {
+            img.src = `${folderPath}minus.png`;
+          }
+          digitsContainer.appendChild(img);
+        });
+      }
+
+      let imagesLoaded = 0;
+      let totalImages = 0;
+
+      function checkAllLoaded() {
+        if (imagesLoaded >= totalImages && totalImages > 0) {
+          setTimeout(() => {
+            document.getElementById('loadingScreen').classList.add('hidden');
+            document.getElementById('rank').classList.add('loaded');
+            document.getElementById('digits').classList.add('loaded');
+          }, 300);
+        }
+      }
+
+      async function updateMMR() {
+        try {
+          const res = await fetch(MMR_API, {
+            headers: {
+              "X-Requested-With": "XMLHttpRequest"
+            }
+          });
+
+          if (!res.ok) {
+            console.error(`API returned status ${res.status}`);
+            showError();
+            return;
+          }
+
+          const data = await res.json();
+          if (data.error || data.rating === undefined || data.rating === null) {
+            console.error('Player not found or invalid response');
+            showError();
+            return;
+          }
+
+          let mmr = data.rating;
+          mmr = Math.max(-2000, mmr);
+
+          showDigits(mmr);
+
+          const rank = rankImages.find(r => mmr >= r.min && mmr <= r.max);
+          const rankImg = document.getElementById("rank");
+
+          if (rank) {
+            totalImages++;
+            rankImg.onload = () => {
+              imagesLoaded++;
+              checkAllLoaded();
+            };
+            rankImg.onerror = () => {
+              imagesLoaded++;
+              checkAllLoaded();
+            };
+            rankImg.src = `${folderPath}${rank.file}`;
+          }
+        } catch (err) {
+          console.error("Error fetching MMR:", err);
+          showError();
+        }
+      }
+
+      function showError() {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('rank').style.display = 'none';
+        document.getElementById('digits').style.display = 'none';
+        document.body.classList.add('error-bg');
+        document.getElementById('errorMessage').classList.add('show');
+      }
+
+      updateMMR();
+      setInterval(updateMMR, 15000);
+
+
+    </script>
+</body>
+
+</html>
