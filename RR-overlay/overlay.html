@@ -248,7 +248,7 @@
   <div class="error-message" id="errorMessage">
     <span class="error-emoji">❌</span>
     <div class="error-text">Error!</div>
-    <div>you silly, this name doesn't exist in the api or u wrote something wrong x3 >w<</div>
+    <div>you silly, this name doesn't exist in the api or u wrote something wrong x3 >w<< /div>
         <a href="index.html" class="back-button">Try Again</a>
     </div>
 
@@ -328,15 +328,26 @@
             }
           });
 
+          // Check if response is not OK (4xx, 5xx errors)
           if (!res.ok) {
             console.error(`API returned status ${res.status}`);
             showError();
             return;
           }
 
-          const data = await res.json();
-          if (data.error || data.rating === undefined || data.rating === null) {
-            console.error('Player not found or invalid response');
+          // Try to parse JSON response
+          let data;
+          try {
+            data = await res.json();
+          } catch (parseError) {
+            console.error('Failed to parse API response:', parseError);
+            showError();
+            return;
+          }
+
+          // Check for error in response or missing/invalid rating
+          if (data.error || data.rating === undefined || data.rating === null || typeof data.rating !== 'number') {
+            console.error('Player not found or invalid response:', data);
             showError();
             return;
           }
@@ -383,4 +394,3 @@
 </body>
 
 </html>
-
