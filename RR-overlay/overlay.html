@@ -253,10 +253,10 @@
     </div>
 
     <script>
-      // Thank you Fendi for the mmr api
       const urlParams = new URLSearchParams(window.location.search);
       const playerName = urlParams.get('player') || '19:16';
       const leaderboard = urlParams.get('leaderboard') || 'xxwuMY';
+
 
       const MMR_API = `https://rr-overlay-026cabce5497.herokuapp.com/mmr?player=${encodeURIComponent(playerName)}&leaderboard=${leaderboard}`;
 
@@ -328,14 +328,14 @@
             }
           });
 
-          // Check if response is not OK (4xx, 5xx errors)
+          
           if (!res.ok) {
             console.error(`API returned status ${res.status}`);
             showError();
             return;
           }
 
-          // Try to parse JSON response
+          
           let data;
           try {
             data = await res.json();
@@ -345,14 +345,20 @@
             return;
           }
 
-          // Check for error in response or missing/invalid rating
-          if (data.error || data.rating === undefined || data.rating === null || typeof data.rating !== 'number') {
+          if (data.error || data.rating === undefined || data.rating === null) {
             console.error('Player not found or invalid response:', data);
             showError();
             return;
           }
 
-          let mmr = data.rating;
+          let mmr = Number(data.rating);
+
+          if (isNaN(mmr)) {
+            console.error('Invalid rating value:', data.rating);
+            showError();
+            return;
+          }
+
           mmr = Math.max(-2000, mmr);
 
           showDigits(mmr);
