@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasane Teto - SM64 Model - Weebo64</title>
+    <link rel="icon" type="image/png" href="../../images/Weebo_logo.png">
+    <link rel="stylesheet" href="character.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <canvas id="stars"></canvas>
+    <div class="floating-renders">
+        <img src="../teto/image-removebg-preview (4).png" alt="Kasane Teto" class="render render-1">
+        <img src="../teto/image-removebg-preview (4).png" alt="Kasane Teto" class="render render-2">
+        <img src="../teto/image-removebg-preview (4).png" alt="Kasane Teto" class="render render-3">
+        <img src="../../images/Weebo_logo.png" alt="Weebo Logo" class="render render-logo render-logo-1">
+        <img src="../../images/Weebo_logo.png" alt="Weebo Logo" class="render render-logo render-logo-2">
+    </div>
+    <a href="../index.html" class="back-button" aria-label="Back to models">
+        <span class="back-icon">←</span>
+        <span class="back-text">Back</span>
+    </a>
+    <div class="container">
+        <header>
+            <div class="character-header">
+                <div class="character-avatar">
+                    <img src="../profile pictures/wip.png" alt="Kasane Teto">
+                </div>
+                <div class="character-title">
+                    <h1>wait a minute...what the fu- (WIP)</h1>
+                    <p class="character-description">
+                        HOLY MOLY!!!! IT THE SILLY 31 YEAR OLD MILF KASANE TETO :DDDDDDDDD
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <section class="model-story">
+            <div class="story-post">
+                <div class="post-date">
+                    <span class="date-icon">📅</span>
+                    <span class="date-text">Work in Progress - November, 17th 2025</span>
+                </div>
+
+                <div class="post-images">
+                    <div class="image-grid">
+                        <a href="../teto images/faceless milf.png" class="image-link" data-lightbox="teto">
+                            <img src="../teto images/faceless milf.png" alt="Kasane Teto Model Preview 1" class="post-image">
+                            <div class="image-overlay">
+                                <span class="zoom-icon">🔍</span>
+                            </div>
+                        </a>
+                        <a href="../teto images/YOOOO TETOOO.png" class="image-link" data-lightbox="teto">
+                            <img src="../teto images/YOOOO TETOOO.png" alt="Kasane Teto Model Preview 2" class="post-image">
+                            <div class="image-overlay">
+                                <span class="zoom-icon">🔍</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="post-content">
+                    <p>YESSSS SIRRRRR U SEE IT!!! I MAKE THE MILF ONE IN MY OWN STYLE!! >:3</p>
+                    <p>i know she has no textures. but maybe soon. who knows ¯\_(ツ)_/¯</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Made with 💜 by Weebo64</p>
+        </footer>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+
+    <script src="../../stars.js"></script>
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const imageLinks = document.querySelectorAll('.image-link');
+        const closeBtn = document.querySelector('.lightbox-close');
+
+        imageLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                lightbox.style.display = 'flex';
+                lightboxImg.src = link.href;
+                lightboxCaption.textContent = link.querySelector('img').alt;
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        closeBtn.addEventListener('click', () => {
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.style.display === 'flex') {
+                lightbox.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+
+</html>
