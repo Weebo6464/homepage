@@ -70,21 +70,14 @@ window.addEventListener('load', () => {
 });
 
 // Animate server count on page load
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const serverCountElement = document.getElementById('server-count');
     
-    try {
-        // Fetch server count from API
-        const response = await fetch('http://localhost:5000/api/stats');
-        const data = await response.json();
-        const targetCount = data.server_count || 0;
-        
-        animateCount(serverCountElement, 0, targetCount, 2000);
-    } catch (error) {
-        console.error('Failed to fetch server count:', error);
-        // Fallback to 0 if API fails
-        serverCountElement.textContent = '0';
-    }
+    // Get the manually set count from HTML
+    const targetCount = parseInt(serverCountElement.textContent) || 0;
+    
+    // Animate from 0 to the target count
+    animateCount(serverCountElement, 0, targetCount, 2000);
 });
 
 function animateCount(element, start, end, duration) {
