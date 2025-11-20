@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeebOwO - Discord Bot</title>
+    <link rel="icon" type="image/png" href="bot_pfp.png">
+
+    <!-- Discord Embed Meta Tags -->
+    <meta property="og:title" content="WeebOwO - Discord Bot">
+    <meta property="og:description" content="invite her to your server!">
+    <meta property="og:image" content="bot_pfp.png">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#9300C3">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="WeebOwO - Discord Bot">
+    <meta name="twitter:description" content="invite her to your server!">
+    <meta name="twitter:image" content="bot_pfp.png">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Warning Banner -->
+    <div id="warning-banner" class="warning-banner">
+        <div class="warning-content">
+            <span class="warning-icon">⚠️</span>
+            <span class="warning-text">The bot is temporarily offline due to unexpected technical issues. We apologize
+                for any inconvenience.</span>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-text">WeebOwO</div>
+        </div>
+    </div>
+
+    <canvas id="particles"></canvas>
+
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <button id="theme-toggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+        </button>
+        <div class="theme-menu" id="theme-menu">
+            <button class="theme-option" data-theme="dark">🌙 Dark</button>
+            <button class="theme-option" data-theme="light">☀️ Light</button>
+            <button class="theme-option" data-theme="auto">💻 System</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <div class="logo-section">
+                <img src="bot_pfp.png" alt="WeebOwO" class="bot-avatar">
+                <h1>WeebOwO</h1>
+            </div>
+            <p class="tagline">A fun Discord bot with lots of silly and useful commands :3</p>
+        </header>
+
+        <!-- About Section -->
+        <section class="about">
+            <h2>About</h2>
+            <p>WeebOwO Discord bot is created by Weebo64! She's a fun bot with lots of silly and useful commands like
+                <code>/weebowo</code> for cute random images, <code>/play</code> for music, <code>/poll</code> for quick
+                polls, <code>/userinfo</code> for user info, and <code>/say</code> to make the bot talk. She can also
+                help moderate your server with automod features :3c
+            </p>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="stat-card">
+                <h3>Servers</h3>
+                <p class="stat-number">She is in <span id="server-count">0</span> Servers at the moment :3</p>
+            </div>
+        </section>
+
+        <!-- Invite Button -->
+        <div class="invite-section">
+            <a href="https://discord.com/oauth2/authorize?client_id=1338683908123922564&permissions=8&integration_type=0&scope=applications.commands+bot"
+                class="invite-btn" target="_blank">
+                Invite WeebOwO
+            </a>
+        </div>
+
+        <!-- Commands Section -->
+        <section class="commands">
+            <h2>Commands</h2>
+
+            <div class="command-category">
+                <h3>🎮 Fun Commands</h3>
+                <div class="command-grid">
+                    <div class="command-item">
+                        <code>/weebowo</code>
+                        <span>Cute random images (Art by kytronix & funnyhoohooman)</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/cinema</code>
+                        <span>Sends the 'absolute_cinema.png' image</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/hug &lt;user&gt;</code>
+                        <span>Send a hug to someone</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/pat &lt;user&gt;</code>
+                        <span>Pat someone on the head</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/ship &lt;user1&gt; &lt;user2&gt;</code>
+                        <span>Ship two users together with compatibility</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/8ball &lt;question&gt;</code>
+                        <span>Ask the magic 8-ball a question</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/car</code>
+                        <span>Get a funny, wholesome, cute, or silly cat gif</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/roll [sides]</code>
+                        <span>Roll a dice (default 6 sides)</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/rps &lt;choice&gt;</code>
+                        <span>Rock, Paper, Scissors</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/say &lt;message&gt;</code>
+                        <span>The bot says your message</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/poll &lt;question&gt;</code>
+                        <span>Create a quick yes/no poll</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-category">
+                <h3>🎵 Music & Media Commands</h3>
+                <div class="command-grid">
+                    <div class="command-item">
+                        <code>/vc</code>
+                        <span>Join your voice channel</span>
+                    </div>
+                    <div class="command-item">
+                        <code>!play &lt;url&gt;</code>
+                        <span>Play audio from YouTube or Spotify</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/music &lt;file&gt;</code>
+                        <span>Upload and play your own file</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/download_mp3 &lt;url&gt;</code>
+                        <span>Download YouTube audio as MP3</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/embed_video &lt;url&gt;</code>
+                        <span>Download and send Instagram or TikTok videos</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/queue</code>
+                        <span>View the music queue</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/skip</code>
+                        <span>Skip to the next song</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/pause</code>
+                        <span>Pause music</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/resume</code>
+                        <span>Resume music</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/stop</code>
+                        <span>Stop playback and clear the queue</span>
+                    </div>
+                    <div class="command-item">
+                        <code>!loop</code>
+                        <span>Loop the current song</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-category">
+                <h3>ℹ️ Utility & Info</h3>
+                <div class="command-grid">
+                    <div class="command-item">
+                        <code>/help</code>
+                        <span>Show all available commands</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/ping</code>
+                        <span>Check latency</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/afk [reason]</code>
+                        <span>Set yourself as AFK (auto-notifies when mentioned)</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/userinfo [user]</code>
+                        <span>Get info about a user</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/serverinfo</code>
+                        <span>Server details</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/avatar [user]</code>
+                        <span>View user avatar (global & server)</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/show_warning</code>
+                        <span>Check your warning count</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/show_banned_words</code>
+                        <span>List all banned words</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/suggest &lt;text&gt;</code>
+                        <span>Submit a suggestion</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/remindme &lt;minutes&gt; &lt;message&gt;</code>
+                        <span>Set a reminder (DMs you after delay)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-category">
+                <h3>🎮 Mario Kart Wii Friend Codes</h3>
+                <div class="command-grid">
+                    <div class="command-item">
+                        <code>/setfc &lt;region&gt; &lt;modpack&gt; &lt;friend_code&gt;</code>
+                        <span>Add your friend code (format: xxxx-xxxx-xxxx)</span>
+                    </div>
+                    <div class="command-item">
+                        <code>/fc [user]</code>
+                        <span>View your or another user's friend codes</span>
+                    </div>
+                </div>
+                <div
+                    style="margin-top: 20px; padding: 15px; background: rgba(147, 0, 195, 0.1); border-left: 4px solid #9300C3; border-radius: 8px;">
+                    <p style="color: #b794f6; font-size: 0.95rem; line-height: 1.6;">
+                        <strong>Regions:</strong> PAL, NTSC-U, NTSC-J, NTSC-K<br>
+                        <strong>Modpacks:</strong> Retro Rewind, Insane Kart Wii, Other<br>
+                        <strong>Format:</strong> Friend codes must be in format <code
+                            style="background: rgba(74, 195, 0, 0.2); padding: 2px 6px; border-radius: 4px; color: #4AC300;">1234-5678-9012</code>
+                    </p>
+                </div>
+            </div>
+
+            <div class="command-category">
+                <h3>✨ Other Features</h3>
+                <div class="command-grid">
+                    <div class="command-item">
+                        <code>AutoMod</code>
+                        <span>Automatic moderation for banned words</span>
+                    </div>
+                    <div class="command-item">
+                        <code>Logging</code>
+                        <span>Message deletion and ban logging</span>
+                    </div>
+                    <div class="command-item">
+                        <code>Welcome/Goodbye</code>
+                        <span>Custom welcome and goodbye messages</span>
+                    </div>
+                    <div class="command-item">
+                        <code>Action Roles</code>
+                        <span>Reaction role system</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>Made with 💖 by <a href="https://www.weebo64.com" target="_blank">Weebo64</a></p>
+            <p class="footer-note">Have fun with the bot :3</p>
+        </footer>
+    </div>
+
+    <script src="particles.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
