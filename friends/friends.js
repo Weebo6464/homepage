@@ -84,7 +84,7 @@ document.querySelectorAll('.friend-card').forEach((card, index) => {
         avatar.style.animationDelay = `${index * 0.3}s`;
     }
 
-    // Reduced sparkle count on hover for better performance
+    // Reduced sparkle for better performance
     card.addEventListener('mouseenter', function () {
         const rect = this.getBoundingClientRect();
         for (let i = 0; i < 2; i++) {
@@ -129,7 +129,7 @@ function highlightRandomFriend() {
 setInterval(highlightRandomFriend, 10000);
 
 let clickSequence = [];
-const correctSequence = ['zelda', 'kytronix', 'horse', 'fco64', 'gh0stp4wz', 'scyhigh'];
+const correctSequence = ['zelda', 'horse', 'fco64', 'gh0stp4wz', 'scyhigh'];
 
 document.querySelectorAll('.friend-card').forEach(card => {
     card.addEventListener('click', function () {
@@ -184,3 +184,4 @@ function activateFriendsEasterEgg() {
         setTimeout(() => message.remove(), 500);
     }, 3000);
 }
+
