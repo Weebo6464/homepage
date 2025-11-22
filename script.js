@@ -174,18 +174,22 @@ const discordClose = document.getElementById('discord-close');
 const discordContent = document.getElementById('discord-content');
 let isDiscordOpen = false;
 
-discordToggle.addEventListener('click', () => {
-    isDiscordOpen = !isDiscordOpen;
-    discordWidget.classList.toggle('active', isDiscordOpen);
-    if (isDiscordOpen && !discordContent.dataset.loaded) {
-        loadDiscordPresence();
-    }
-});
+if (discordToggle) {
+    discordToggle.addEventListener('click', () => {
+        isDiscordOpen = !isDiscordOpen;
+        discordWidget.classList.toggle('active', isDiscordOpen);
+        if (isDiscordOpen && !discordContent.dataset.loaded) {
+            loadDiscordPresence();
+        }
+    });
+}
 
-discordClose.addEventListener('click', () => {
-    isDiscordOpen = false;
-    discordWidget.classList.remove('active');
-});
+if (discordClose) {
+    discordClose.addEventListener('click', () => {
+        isDiscordOpen = false;
+        discordWidget.classList.remove('active');
+    });
+}
 
 async function loadDiscordPresence() {
     try {
@@ -234,8 +238,8 @@ function getUserAvatar(user) {
     if (user.avatar) {
         return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
     } else {
-        const defaultIndex = user.discriminator === "0" 
-            ? (parseInt(user.id) >> 22) % 6 
+        const defaultIndex = user.discriminator === "0"
+            ? (parseInt(user.id) >> 22) % 6
             : parseInt(user.discriminator) % 5;
         return `https://cdn.discordapp.com/embed/avatars/${defaultIndex}.png`;
     }
@@ -262,8 +266,8 @@ function buildActivityCard(activity) {
     };
     const typeText = activityTypes[activity.type] || 'Activity';
     if (activity.type === 4) {
-        const emoji = activity.emoji ? (activity.emoji.id ? 
-            `<img src="https://cdn.discordapp.com/emojis/${activity.emoji.id}.${activity.emoji.animated ? 'gif' : 'png'}" style="width: 20px; height: 20px; vertical-align: middle;">` : 
+        const emoji = activity.emoji ? (activity.emoji.id ?
+            `<img src="https://cdn.discordapp.com/emojis/${activity.emoji.id}.${activity.emoji.animated ? 'gif' : 'png'}" style="width: 20px; height: 20px; vertical-align: middle;">` :
             activity.emoji.name) : '';
         return `
             <div class="discord-activity">
