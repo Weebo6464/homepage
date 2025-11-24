@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>...</title>
+    <link rel="icon" href="data:,">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .content {
+            text-align: center;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gif-container {
+            max-width: 90vw;
+            max-height: 80vh;
+        }
+
+        .gif-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .youtube-player {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <div class="gif-container">
+            <img src="https://media.tenor.com/jWeXSzmd-yUAAAAi/lonely-lonely-lonely.gif" alt="Lonely Lonely Lonely">
+        </div>
+    </div>
+    <audio id="audio">
+        <source src="lonley.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        const audio = document.getElementById('audio');
+        audio.volume = 0.1;
+
+        window.addEventListener('load', () => {
+            audio.play().catch(() => {
+                document.body.addEventListener('click', () => {
+                    audio.play();
+                }, { once: true });
+            });
+        });
+    </script>
+</body>
+
+</html>
