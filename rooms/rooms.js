@@ -630,7 +630,56 @@ document.addEventListener('keydown', (e) => {
 });
 
 const fcInput = document.getElementById('reportFC');
-fcInput.addEventListener('input', (e) => {
+const miiNameInput = document.getElementById('reportMiiName');
+
+async function lookupMiiName(friendCode) {
+    const cleanFC = friendCode.replace(/[^0-9]/g, '');
+    if (cleanFC.length !== 12) return null;
+
+    try {
+        for (let i = 0; i < CORS_PROXIES.length; i++) {
+            try {
+                const proxy = CORS_PROXIES[(currentProxyIndex + i) % CORS_PROXIES.length];
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+                const response = await fetch(proxy + encodeURIComponent(API_ENDPOINT), {
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) continue;
+
+                const groups = await response.json();
+
+                
+                for (const group of groups) {
+                    if (group.players) {
+                        for (const player of Object.values(group.players)) {
+                            if (player.fc && player.fc.replace(/[^0-9]/g, '') === cleanFC) {
+                                return player.n || null;
+                            }
+                        }
+                    }
+                }
+
+                return null;
+
+            } catch (err) {
+                console.warn(`Proxy lookup failed: ${err.message}`);
+                continue;
+            }
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error looking up Mii name:', error);
+        return null;
+    }
+}
+
+fcInput.addEventListener('input', async (e) => {
     let value = e.target.value.replace(/[^0-9]/g, '');
     if (value.length > 12) value = value.slice(0, 12);
 
@@ -640,6 +689,13 @@ fcInput.addEventListener('input', (e) => {
         formatted += value[i];
     }
     e.target.value = formatted;
+
+    if (value.length === 12) {
+        const miiName = await lookupMiiName(value);
+        if (miiName) {
+            miiNameInput.value = miiName;
+        }
+    }
 });
 
 const categorySelect = document.getElementById('reportCategory');
@@ -662,6 +718,33 @@ categorySelect.addEventListener('change', (e) => {
         otherDescriptionInput.required = false;
         otherDescriptionInput.value = '';
         additionalDetailsGroup.style.display = 'none';
+    }
+});
+
+document.addEventListener('paste', (e) => {
+    if (!reportModal.classList.contains('show')) return;
+
+    const items = e.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        
+        if (item.type.startsWith('image/') || item.type.startsWith('video/')) {
+            const blob = item.getAsFile();
+            const dataTransfer = new DataTransfer();
+            const fileName = `pasted-${Date.now()}${item.type.includes('image') ? '.png' : '.mp4'}`;
+            const file = new File([blob], fileName, { type: item.type });
+            dataTransfer.items.add(file);
+            const fileInput = document.getElementById('reportFile');
+            fileInput.files = dataTransfer.files;
+            const fileInfo = fileInput.parentElement.querySelector('.file-info');
+            if (fileInfo) {
+                fileInfo.textContent = `✅ Image/Video pasted: ${fileName} (${(blob.size / (1024 * 1024)).toFixed(2)}MB)`;
+                fileInfo.style.color = '#00d084';
+            }
+            
+            e.preventDefault();
+            break;
+        }
     }
 });
 
@@ -795,6 +878,3 @@ reportForm.addEventListener('submit', async (e) => {
         submitBtn.textContent = 'Submit Report';
     }
 });
-
-// thanks to ppeb for the VR room code.
-
