@@ -653,13 +653,20 @@ async function lookupMiiName(friendCode) {
 
                 const groups = await response.json();
 
-                
                 for (const group of groups) {
                     if (group.players) {
                         for (const player of Object.values(group.players)) {
-                            if (player.fc && player.fc.replace(/[^0-9]/g, '') === cleanFC) {
-                                const miiName = (player.mii && player.mii[0] && player.mii[0].name || player.name || null;
-                                return miiName;
+                            if (player.fc) {
+                                const playerFC = player.fc.replace(/[^0-9]/g, '');
+                                if (playerFC === cleanFC) {
+                                    const miiName = (player.mii && player.mii[0] && player.mii[0].name) 
+                                                    || player.name 
+                                                    || player.n 
+                                                    || null;
+                                    if (miiName) {
+                                        return miiName;
+                                    }
+                                }
                             }
                         }
                     }
@@ -668,14 +675,12 @@ async function lookupMiiName(friendCode) {
                 return null;
 
             } catch (err) {
-                console.warn(`Proxy lookup failed: ${err.message}`);
                 continue;
             }
         }
 
         return null;
     } catch (error) {
-        console.error('Error looking up Mii name:', error);
         return null;
     }
 }
@@ -879,4 +884,3 @@ reportForm.addEventListener('submit', async (e) => {
         submitBtn.textContent = 'Submit Report';
     }
 });
-
