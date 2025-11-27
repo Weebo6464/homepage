@@ -658,7 +658,8 @@ async function lookupMiiName(friendCode) {
                     if (group.players) {
                         for (const player of Object.values(group.players)) {
                             if (player.fc && player.fc.replace(/[^0-9]/g, '') === cleanFC) {
-                                return player.n || null;
+                                const miiName = (player.mii && player.mii[0] && player.mii[0].name || player.name || null;
+                                return miiName;
                             }
                         }
                     }
@@ -878,3 +879,4 @@ reportForm.addEventListener('submit', async (e) => {
         submitBtn.textContent = 'Submit Report';
     }
 });
+
