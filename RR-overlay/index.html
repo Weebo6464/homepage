@@ -152,6 +152,51 @@
             padding: 10px;
         }
 
+        .color-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="color"] {
+            width: 60px;
+            height: 50px;
+            border: 2px solid rgba(52, 152, 219, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input[type="color"]:hover {
+            border-color: rgba(52, 152, 219, 0.6);
+        }
+
+        input[type="color"]:focus {
+            outline: none;
+            border-color: rgba(52, 152, 219, 0.6);
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .hex-input {
+            flex: 1;
+            padding: 15px 20px !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 2px solid rgba(52, 152, 219, 0.3) !important;
+            border-radius: 12px !important;
+            color: #fff !important;
+            font-size: 1rem !important;
+            font-family: 'Courier New', monospace !important;
+            text-transform: uppercase;
+            transition: all 0.3s ease !important;
+        }
+
+        .hex-input:focus {
+            outline: none !important;
+            border-color: rgba(52, 152, 219, 0.6) !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.3) !important;
+        }
+
         .btn-submit {
             width: 100%;
             padding: 15px 20px;
@@ -230,11 +275,11 @@
         <h1>MMR Overlay</h1>
         <p class="subtitle">Enter your Mogi name to view your MMR</p>
 
-        <form id="loginForm" onsubmit="return false;">
+        <form id="loginForm">
             <div class="form-group">
                 <label for="playerName">Mogi Name</label>
-                <input type="text" id="playerName" placeholder="Enter your name (e.g., 19:16)"
-                    required autocomplete="off">
+                <input type="text" id="playerName" placeholder="Enter your name (e.g., 19:16)" required
+                    autocomplete="off">
             </div>
 
             <div class="form-group">
@@ -243,6 +288,14 @@
                     <option value="xxwuMY">Retro Leaderboard</option>
                     <option value="Y6ND2_">CT Leaderboard</option>
                 </select>
+            </div>
+
+            <div class="form-group">
+                <label for="digitColor">Digit Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="digitColor" value="#ffffff" title="Choose digit color">
+                    <input type="text" id="digitColorHex" placeholder="#ffffff" maxlength="7" class="hex-input">
+                </div>
             </div>
 
             <button type="submit" class="btn-submit">View My MMR</button>
@@ -254,15 +307,18 @@
 
         <div class="credits">
             <p>Thanks to <strong>Fendi</strong> for the 1st version of the code and his idea.</p>
-            <p>Thanks to <strong>Galden</strong> for the MMR Page.</p>
+            <p>Thanks to <strong>Galden</strong> for the MMR page.</p>
         </div>
     </div>
 
     <script>
-        // Clean URL - remove index.html if present
-        if (window.location.pathname.indexOf('/index.html') !== -1) {
-            const cleanPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/index.html') + 1);
-            window.history.replaceState({}, '', cleanPath);
+        try {
+            if (window.location.pathname.indexOf('/index.html') !== -1 && window.location.protocol !== 'file:') {
+                const cleanPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/index.html') + 1);
+                window.history.replaceState({}, '', cleanPath);
+            }
+        } catch (e) {
+            console.log('Running locally, skipping URL cleanup');
         }
 
         const canvas = document.getElementById('stars');
@@ -309,21 +365,36 @@
 
         initStars();
         animateStars();
+        
+        const colorPicker = document.getElementById('digitColor');
+        const hexInput = document.getElementById('digitColorHex');
+
+        colorPicker.addEventListener('input', function () {
+            hexInput.value = this.value.toUpperCase();
+        });
+
+        hexInput.addEventListener('input', function () {
+            let value = this.value.trim();
+            if (!value.startsWith('#')) {
+                value = '#' + value;
+            }
+            if (/^#[0-9A-F]{6}$/i.test(value)) {
+                colorPicker.value = value;
+            }
+        });
 
         document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
             const playerName = document.getElementById('playerName').value.trim();
             const leaderboard = document.getElementById('leaderboard').value;
+            const digitColor = document.getElementById('digitColor').value;
 
             if (playerName) {
-                window.location.href = `overlay.html?player=${encodeURIComponent(playerName)}&leaderboard=${encodeURIComponent(leaderboard)}`;
+                window.location.href = `overlay.html?player=${encodeURIComponent(playerName)}&leaderboard=${encodeURIComponent(leaderboard)}&color=${encodeURIComponent(digitColor)}`;
             }
         });
     </script>
 </body>
 
 </html>
-
-
-
