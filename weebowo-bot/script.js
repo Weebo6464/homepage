@@ -192,3 +192,31 @@ if (tagline) {
     
     setTimeout(typeWriter, 1000);
 }
+
+
+// Warning Modal Functions
+function openWarningModal() {
+    const modal = document.getElementById('warning-modal');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeWarningModal(event) {
+    const modal = document.getElementById('warning-modal');
+    if (modal) {
+        // If event exists and clicked on overlay (not content), close
+        if (!event || event.target === modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeWarningModal();
+    }
+});
