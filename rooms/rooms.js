@@ -592,7 +592,7 @@ setInterval(() => {
 
 fetchRooms();
 
-const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1434643639476420889/HLW7ffk1B0-4UeGzl-8UsaLvqLjpaC7qtHz1dI8-HWWwW5b5HCgsA96_vJkExkm5Yu5A';
+// const DISCORD_WEBHOOK_URL = 'xxx'; - Temporary Disbaled due to no server (I will add them later when im able to)
 
 const reportButton = document.getElementById('reportButton');
 const reportModal = document.getElementById('reportModal');
@@ -884,3 +884,4 @@ reportForm.addEventListener('submit', async (e) => {
         submitBtn.textContent = 'Submit Report';
     }
 });
+
