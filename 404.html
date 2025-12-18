@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <link rel="icon" type="image/png" href="images/Weebo_logo.png">
+    <meta name="theme-color" content="#9300C3">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .error-code {
+            font-size: 120px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #9300C3, #FF006E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .error-message {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 20px 0;
+            color: var(--text-primary);
+        }
+
+        .error-description {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 20px auto;
+            line-height: 1.6;
+        }
+
+        .error-illustration {
+            width: 200px;
+            height: 200px;
+            margin: 30px 0;
+            object-fit: contain;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .error-button {
+            padding: 12px 30px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .error-button-primary {
+            background: linear-gradient(135deg, #9300C3, #FF006E);
+            color: white;
+        }
+
+        .error-button-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(147, 0, 195, 0.4);
+        }
+
+        .error-button-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .error-button-secondary:hover {
+            background: var(--border-color);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 80px;
+            }
+
+            .error-message {
+                font-size: 24px;
+            }
+
+            .error-description {
+                font-size: 16px;
+            }
+
+            .error-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .error-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading-screen" style="display: none;">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-text">Weebo64</div>
+        </div>
+    </div>
+    
+    <div class="theme-switcher">
+        <button id="theme-toggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+        </button>
+        <div class="theme-menu" id="theme-menu">
+            <button class="theme-option" data-theme="dark">🌙 Dark</button>
+            <button class="theme-option" data-theme="light">☀️ Light</button>
+            <button class="theme-option" data-theme="auto">💻 System</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="error-container">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-message">Oops! Page Not Found</h2>
+            
+            <img src="images/aha.png" alt="Oops!" class="error-illustration">
+
+            <p class="error-description">
+                Oh-Uh looks like something wrong happened :<<br>
+                maybe the page got deleted or dont exist anymore...<br>
+                but don't worry 
+            </p>
+
+            <div class="error-actions">
+                <a href="/" class="error-button error-button-primary">Go back to Home</a>
+            </div>
+        </div>
+
+        <footer style="margin-top: 60px; text-align: center;">
+            <p>Made with 💜 by Weebo64</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
