@@ -1,0 +1,16 @@
+{
+  "name": "weebo64-website",
+  "version": "1.0.0",
+  "description": "Weebo64's personal website with YouTube sub battle",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "netlify deploy --prod"
+  },
+  "keywords": ["weebo64", "mario-kart", "super-mario-64"],
+  "author": "Weebo64",
+  "license": "MIT",
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  }
+}
