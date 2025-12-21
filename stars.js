@@ -1,4 +1,8 @@
 const canvas = document.getElementById('stars');
+if (!canvas) {
+    // Exit gracefully if canvas doesn't exist on this page
+    console.log('Stars canvas not found - skipping animation');
+} else {
 const ctx = canvas.getContext('2d');
 let stars = [];
 let shootingStars = [];
@@ -159,3 +163,4 @@ canvas.addEventListener('click', (e) => {
         }, 2000);
     }
 });
+}
