@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub Battle - Team Nintendo vs Team SEGA | Weebo64</title>
+    <link rel="icon" type="image/png" href="../images/Weebo_logo.png">
+    <meta property="og:title" content="Sub Battle - Nintendo vs SEGA">
+    <meta property="og:description" content="Live YouTube subscriber battle between Team Nintendo and Team SEGA">
+    <meta name="theme-color" content="#9300C3">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="sub-battle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="loading-screen">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-text">Loading...</div>
+        </div>
+    </div>
+    <div class="floating-renders">
+        <img src="../images/Weebo.png" alt="Weebo" class="render render-1">
+        <img src="../images/WeebOwO.png" alt="WeebOwO" class="render render-2">
+        <img src="../images/weebo64.png" alt="Weebo64" class="render render-3">
+        <img src="../images/weebowo64.png" alt="WeebOwO64" class="render render-4">
+        <img src="../images/Weebo_logo.png" alt="Weebo Logo" class="render render-logo render-logo-1">
+        <img src="../images/Weebo_logo.png" alt="Weebo Logo" class="render render-logo render-logo-2">
+        <img src="../images/Weebo_logo.png" alt="Weebo Logo" class="render render-logo render-logo-3">
+    </div>
+    <div class="theme-switcher">
+        <button id="theme-toggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+        </button>
+        <div class="theme-menu" id="theme-menu">
+            <button class="theme-option" data-theme="dark">🌙 Dark</button>
+            <button class="theme-option" data-theme="light">☀️ Light</button>
+            <button class="theme-option" data-theme="auto">💻 System</button>
+        </div>
+    </div>
+    <div class="container">
+        <header>
+            <a href="../" class="back-button">← Back to Home</a>
+            <h1>Sub Battle</h1>
+            <p class="subtitle">Team Nintendo vs Team SEGA</p>
+        </header>
+
+        <div class="battle-arena">
+            <div class="team team-nintendo">
+                <div class="team-header">
+                    <h2>Team Nintendo - ShyLucky64</h2>
+                </div>
+                <div class="channel-info">
+                    <img id="nintendo-avatar" src="" alt="Channel Avatar" class="channel-avatar">
+                    <h3 id="nintendo-name">Loading...</h3>
+                </div>
+                <div class="sub-count" id="nintendo-subs">
+                    <span class="count">---</span>
+                    <span class="label">subscribers</span>
+                </div>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-value" id="nintendo-videos">---</span>
+                        <span class="stat-label">videos</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="nintendo-views">---</span>
+                        <span class="stat-label">views</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vs-divider">
+                <div class="vs-circle">VS</div>
+                <div class="difference" id="difference">
+                    <span class="diff-label">Difference</span>
+                    <span class="diff-value">---</span>
+                </div>
+            </div>
+
+            <div class="team team-sega">
+                <div class="team-header">
+                    <h2>Team SEGA - Nishi's Sonic World</h2>
+                </div>
+                <div class="channel-info">
+                    <img id="sega-avatar" src="" alt="Channel Avatar" class="channel-avatar">
+                    <h3 id="sega-name">Loading...</h3>
+                </div>
+                <div class="sub-count" id="sega-subs">
+                    <span class="count">---</span>
+                    <span class="label">subscribers</span>
+                </div>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-value" id="sega-videos">---</span>
+                        <span class="stat-label">videos</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="sega-views">---</span>
+                        <span class="stat-label">views</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <p>📊 Updates every 30 seconds</p>
+            <p class="note">Data provided by YouTube Data API v3</p>
+        </div>
+    </div>
+
+    <script src="../stars.js"></script>
+    <script src="../script.js"></script>
+    <script src="sub-battle.js"></script>
+</body>
+</html>
