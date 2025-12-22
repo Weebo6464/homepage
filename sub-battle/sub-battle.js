@@ -1,11 +1,11 @@
 const CHANNELS = {
-    nintendo: 'https://www.youtube.com/@ShyLucky64', // Replace with Team Nintendo's channel ID
-    sega: 'https://www.youtube.com/@NishisSonicWorld'      // Replace with Team SEGA's channel ID
+    nintendo: 'UCiJGvf_7iEqzMVBnGJFY-Ow', // ShyLucky64 uwu
+    sega: 'UCvPRUNM0d-xmvpXPMVLqVXQ'      // NishisSonicWorld uwu
 };
 
 const API_KEY = 'AIzaSyB6xGNe74qweNrsvN7YF525dVYrFRVPsx4';
 
-const UPDATE_INTERVAL = 30000; // 30 seconds
+const UPDATE_INTERVAL = 30000;
 
 function formatNumber(num) {
     if (num >= 1000000) {
@@ -77,7 +77,6 @@ async function updateAllData() {
     }
 }
 
-// Check if API key and channel IDs are configured
 function checkConfiguration() {
     if (API_KEY === 'YOUR_API_KEY_HERE' || 
         CHANNELS.nintendo === 'CHANNEL_ID_HERE' || 
@@ -104,7 +103,6 @@ function checkConfiguration() {
     return true;
 }
 
-// Initialize
 if (checkConfiguration()) {
     updateAllData();
     setInterval(updateAllData, UPDATE_INTERVAL);
