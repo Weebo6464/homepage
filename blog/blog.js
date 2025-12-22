@@ -57,7 +57,11 @@ async function loadPosts() {
         const data = await response.json();
         allPosts = data.posts || data;
         
-        allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        allPosts.sort((a, b) => {
+            if (a.pinned && !b.pinned) return -1;
+            if (!a.pinned && b.pinned) return 1;
+            return new Date(b.date) - new Date(a.date);
+        });
         
         const allTags = new Set();
         allPosts.forEach(post => {
@@ -119,9 +123,9 @@ function displayPosts(posts) {
         const preview = isLong ? content.substring(0, 300) + '...' : content;
         
         return `
-            <article class="post-card" data-post-id="${post.id}">
+            <article class="post-card${post.pinned ? ' pinned' : ''}" data-post-id="${post.id}">
                 <div class="post-header">
-                    <h2 class="post-title">${escapeHtml(post.title)}</h2>
+                    <h2 class="post-title">${post.pinned ? '📌 ' : ''}${escapeHtml(post.title)}</h2>
                     <span class="post-date">${formatDate(post.date)}</span>
                 </div>
                 <div class="post-content">
