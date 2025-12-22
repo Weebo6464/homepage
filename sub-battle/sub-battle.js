@@ -1,6 +1,6 @@
 const CHANNELS = {
-    nintendo: 'UCiJGvf_7iEqzMVBnGJFY-Ow', // ShyLucky64 uwu
-    sega: 'UCvPRUNM0d-xmvpXPMVLqVXQ'      // NishisSonicWorld uwu
+    nintendo: 'ShyLucky64', // ShyLucky64 handle
+    sega: 'NishisSonicWorld'      // NishisSonicWorld handle
 };
 
 const API_KEY = 'AIzaSyB6xGNe74qweNrsvN7YF525dVYrFRVPsx4';
@@ -16,12 +16,19 @@ function formatNumber(num) {
     return num.toLocaleString();
 }
 
-async function fetchChannelData(channelId) {
+async function fetchChannelData(channelHandle) {
     try {
-        const response = await fetch(
-            `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${channelId}&key=${API_KEY}`
-        );
+        // Try by handle first (for @username format)
+        let url;
+        if (channelHandle.startsWith('UC')) {
+            // It's a channel ID
+            url = `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${channelHandle}&key=${API_KEY}`;
+        } else {
+            // It's a handle
+            url = `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&forHandle=${channelHandle}&key=${API_KEY}`;
+        }
         
+        const response = await fetch(url);
         const data = await response.json();
         
         if (!response.ok) {
@@ -34,6 +41,7 @@ async function fetchChannelData(channelId) {
         
         if (data.items && data.items.length > 0) {
             const channel = data.items[0];
+            console.log('Channel found:', channel.snippet.title);
             return {
                 name: channel.snippet.title,
                 avatar: channel.snippet.thumbnails.high.url,
@@ -43,6 +51,7 @@ async function fetchChannelData(channelId) {
             };
         }
         
+        console.error('No channel data returned for:', channelHandle);
         throw new Error('Channel not found');
     } catch (error) {
         console.error('Error fetching channel data:', error);
