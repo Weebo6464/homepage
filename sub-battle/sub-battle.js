@@ -22,11 +22,15 @@ async function fetchChannelData(channelId) {
             `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${channelId}&key=${API_KEY}`
         );
         
+        const data = await response.json();
+        
         if (!response.ok) {
+            console.error('API Error:', data);
+            if (data.error) {
+                throw new Error(`API Error: ${data.error.message}`);
+            }
             throw new Error('API request failed');
         }
-        
-        const data = await response.json();
         
         if (data.items && data.items.length > 0) {
             const channel = data.items[0];
