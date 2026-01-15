@@ -5,10 +5,11 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const starImage = new Image();
-starImage.src = 'https://static.wikia.nocookie.net/mariokart/images/0/02/Starman.png/revision/latest/scale-to-width-down/340?cb=20170510025137';
+starImage.src = 'images/Starman.webp';
 
 const stars = [];
 const numStars = 50;
+let imageLoaded = false;
 
 class Star {
     constructor() {
@@ -38,17 +39,24 @@ class Star {
         ctx.globalAlpha = this.opacity;
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation);
-        ctx.drawImage(starImage, -this.size / 2, -this.size / 2, this.size, this.size);
+        
+        if (imageLoaded) {
+            ctx.drawImage(starImage, -this.size / 2, -this.size / 2, this.size, this.size);
+        }
+        
         ctx.restore();
     }
 }
 
 starImage.onload = function() {
-    for (let i = 0; i < numStars; i++) {
-        stars.push(new Star());
-    }
-    animate();
+    imageLoaded = true;
 };
+
+for (let i = 0; i < numStars; i++) {
+    stars.push(new Star());
+}
+
+animate();
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
