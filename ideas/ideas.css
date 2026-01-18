@@ -223,6 +223,100 @@ header h1 {
     margin-bottom: 40px;
 }
 
+.development-section {
+    padding: 0 20px 40px;
+}
+
+.development-card {
+    background: rgba(17, 24, 39, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 60px 40px;
+    border-radius: 20px;
+    border: 2px solid rgba(255, 223, 0, 0.4);
+    text-align: center;
+    margin-bottom: 40px;
+    transition: all 0.3s ease;
+}
+
+.development-card:hover {
+    border-color: rgba(255, 223, 0, 0.6);
+    box-shadow: 0 10px 30px rgba(255, 223, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+.development-icon {
+    font-size: 5rem;
+    margin-bottom: 25px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+.development-card h2 {
+    font-size: 2.5rem;
+    color: #ffdf00;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.development-message {
+    font-size: 1.2rem;
+    color: #d1d5db;
+    line-height: 1.8;
+    max-width: 700px;
+    margin: 0 auto 30px;
+}
+
+.development-status {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: rgba(255, 223, 0, 0.15);
+    border: 2px solid rgba(255, 223, 0, 0.4);
+    border-radius: 50px;
+    font-weight: 600;
+}
+
+.status-icon {
+    font-size: 1.3rem;
+}
+
+.status-text {
+    color: #ffdf00;
+    font-size: 1.1rem;
+}
+
+.patience-message {
+    font-size: 1.1rem;
+    color: #9ca3af;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+.alternatives-intro {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #d1d5db;
+    margin-bottom: 30px;
+    padding: 0 20px;
+}
+
 #idea-form {
     display: flex;
     flex-direction: column;
@@ -523,13 +617,16 @@ header h1 {
 
 body.light-mode .info-card,
 body.light-mode .form-section,
-body.light-mode .alt-card {
+body.light-mode .alt-card,
+body.light-mode .development-card {
     background: rgba(255, 255, 255, 0.85);
     border: 1px solid rgba(255, 223, 0, 0.4);
 }
 
 body.light-mode .info-card p,
-body.light-mode .alt-card p {
+body.light-mode .alt-card p,
+body.light-mode .development-message,
+body.light-mode .alternatives-intro {
     color: #1d1d1f;
 }
 
@@ -552,7 +649,9 @@ body.light-mode .form-group label {
 
 body.light-mode .info-card h3,
 body.light-mode .alt-card h3,
-body.light-mode .alternatives-section h2 {
+body.light-mode .alternatives-section h2,
+body.light-mode .development-card h2,
+body.light-mode .status-text {
     color: #ff6b6b;
 }
 

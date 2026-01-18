@@ -63,33 +63,3 @@ window.addEventListener('load', () => {
         }, 300);
     }
 });
-
-// Form handling
-const form = document.getElementById('idea-form');
-
-// Check for success parameter in URL
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('success') === 'true') {
-    const formSection = document.querySelector('.form-section');
-    formSection.innerHTML = `
-        <div class="success-message">
-            <div class="success-icon">✨</div>
-            <h2>Thank you!</h2>
-            <p>Your idea has been submitted successfully. I'll review it and get back to you if needed!</p>
-            <a href="/ideas/" class="submit-btn" style="text-decoration: none; display: inline-block; margin-top: 20px;">
-                <span class="submit-text">Submit Another Idea</span>
-            </a>
-        </div>
-    `;
-}
-
-form.addEventListener('submit', (e) => {
-    const submitBtn = form.querySelector('.submit-btn');
-    const originalText = submitBtn.innerHTML;
-    
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="submit-text">Submitting...</span><span class="submit-icon">⏳</span>';
-    
-    // Let Netlify handle the form submission
-    // If not on Netlify, the form will fail gracefully
-});
