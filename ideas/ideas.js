@@ -96,24 +96,17 @@ if (ideaForm) {
             const titleValue = document.getElementById('title')?.value?.trim() || '';
             const descriptionValue = document.getElementById('description')?.value?.trim() || '';
             
-            // Build the submission URL with all parameters
-            const baseUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
-            const params = new URLSearchParams();
-            params.append(GOOGLE_FORM_CONFIG.fields.name, nameValue);
-            params.append(GOOGLE_FORM_CONFIG.fields.email, emailValue);
-            params.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
-            params.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
-            params.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
-            params.append('submit', 'Submit');
-            
-            // Use POST with FormData
             const formData = new FormData();
             formData.append(GOOGLE_FORM_CONFIG.fields.name, nameValue);
             formData.append(GOOGLE_FORM_CONFIG.fields.email, emailValue);
             formData.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
             formData.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
             formData.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
-            formData.append('submit', 'Submit');
+            formData.append('entry.1065046570_sentinel', '');
+            formData.append('fvv', '1');
+            formData.append('pageHistory', '0');
+            
+            const baseUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
             
             fetch(baseUrl, {
                 method: 'POST',
@@ -121,7 +114,6 @@ if (ideaForm) {
                 mode: 'no-cors'
             });
             
-            // Wait a moment for submission
             await new Promise(resolve => setTimeout(resolve, 1000));
 
             ideaForm.style.display = 'none';
