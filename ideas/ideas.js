@@ -90,35 +90,28 @@ if (ideaForm) {
         submitBtn.innerHTML = '<span class="submit-icon">⏳</span><span>Submitting...</span>';
 
         try {
-            const formData = new FormData();
             const nameValue = document.getElementById('name')?.value?.trim() || '';
             const emailValue = document.getElementById('email/discord')?.value?.trim() || '';
             const categoryValue = document.getElementById('category')?.value?.trim() || '';
             const titleValue = document.getElementById('title')?.value?.trim() || '';
             const descriptionValue = document.getElementById('description')?.value?.trim() || '';
             
-            if (nameValue) {
-                formData.append(GOOGLE_FORM_CONFIG.fields.name, nameValue);
-            }
-            if (emailValue) {
-                formData.append(GOOGLE_FORM_CONFIG.fields.email, emailValue);
-            }
-            if (categoryValue) {
-                formData.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
-            }
-            if (titleValue) {
-                formData.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
-            }
-            if (descriptionValue) {
-                formData.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
-            }
-
+            const formData = new URLSearchParams();
+            formData.append(GOOGLE_FORM_CONFIG.fields.name, nameValue);
+            formData.append(GOOGLE_FORM_CONFIG.fields.email, emailValue);
+            formData.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
+            formData.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
+            formData.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
+            
             const formUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
             
             await fetch(formUrl, {
                 method: 'POST',
-                body: formData,
-                mode: 'no-cors'
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData.toString()
             });
 
             ideaForm.style.display = 'none';
