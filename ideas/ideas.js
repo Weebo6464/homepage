@@ -91,11 +91,19 @@ if (ideaForm) {
 
         try {
             const formData = new FormData();
-            formData.append(GOOGLE_FORM_CONFIG.fields.name, document.getElementById('name').value);
-            formData.append(GOOGLE_FORM_CONFIG.fields.email, document.getElementById('email').value);
-            formData.append(GOOGLE_FORM_CONFIG.fields.category, document.getElementById('category').value);
-            formData.append(GOOGLE_FORM_CONFIG.fields.title, document.getElementById('title').value);
-            formData.append(GOOGLE_FORM_CONFIG.fields.description, document.getElementById('description').value);
+            const nameValue = document.getElementById('name')?.value || '';
+            const emailValue = document.getElementById('email')?.value || '';
+            const categoryValue = document.getElementById('category')?.value || '';
+            const titleValue = document.getElementById('title')?.value || '';
+            const descriptionValue = document.getElementById('description')?.value || '';
+            
+            formData.append(GOOGLE_FORM_CONFIG.fields.name, nameValue);
+            if (emailValue) {
+                formData.append(GOOGLE_FORM_CONFIG.fields.email, emailValue);
+            }
+            formData.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
+            formData.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
+            formData.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
 
             const formUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
             
