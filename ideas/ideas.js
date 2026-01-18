@@ -102,19 +102,18 @@ if (ideaForm) {
             formData.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
             formData.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
             formData.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
-            formData.append('entry.1065046570_sentinel', '');
-            formData.append('fvv', '1');
-            formData.append('pageHistory', '0');
             
             const baseUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
             
-            fetch(baseUrl, {
+            await fetch(baseUrl, {
                 method: 'POST',
                 body: formData,
                 mode: 'no-cors'
+            }).catch(() => {
+                // Ignore errors - no-cors mode always throws but submission works
             });
             
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 500));
 
             ideaForm.style.display = 'none';
             document.getElementById('success-message').style.display = 'block';
