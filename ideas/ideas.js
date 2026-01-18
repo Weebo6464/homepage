@@ -91,19 +91,27 @@ if (ideaForm) {
 
         try {
             const formData = new FormData();
-            const nameValue = document.getElementById('name')?.value || '';
-            const emailValue = document.getElementById('email')?.value || '';
-            const categoryValue = document.getElementById('category')?.value || '';
-            const titleValue = document.getElementById('title')?.value || '';
-            const descriptionValue = document.getElementById('description')?.value || '';
+            const nameValue = document.getElementById('name')?.value?.trim() || '';
+            const emailValue = document.getElementById('email/discord')?.value?.trim() || '';
+            const categoryValue = document.getElementById('category')?.value?.trim() || '';
+            const titleValue = document.getElementById('title')?.value?.trim() || '';
+            const descriptionValue = document.getElementById('description')?.value?.trim() || '';
             
-            formData.append(GOOGLE_FORM_CONFIG.fields.name, nameValue);
+            if (nameValue) {
+                formData.append(GOOGLE_FORM_CONFIG.fields.name, nameValue);
+            }
             if (emailValue) {
                 formData.append(GOOGLE_FORM_CONFIG.fields.email, emailValue);
             }
-            formData.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
-            formData.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
-            formData.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
+            if (categoryValue) {
+                formData.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
+            }
+            if (titleValue) {
+                formData.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
+            }
+            if (descriptionValue) {
+                formData.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
+            }
 
             const formUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
             
