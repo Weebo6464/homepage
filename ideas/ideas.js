@@ -96,39 +96,30 @@ if (ideaForm) {
             const titleValue = document.getElementById('title')?.value?.trim() || '';
             const descriptionValue = document.getElementById('description')?.value?.trim() || '';
             
-            const iframe = document.createElement('iframe');
-            iframe.name = 'hidden_iframe';
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
+            // Build the submission URL with all parameters
+            const baseUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
+            const params = new URLSearchParams();
+            params.append(GOOGLE_FORM_CONFIG.fields.name, nameValue);
+            params.append(GOOGLE_FORM_CONFIG.fields.email, emailValue);
+            params.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
+            params.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
+            params.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
             
-            const tempForm = document.createElement('form');
-            tempForm.action = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
-            tempForm.method = 'POST';
-            tempForm.target = 'hidden_iframe';
+            // Submit using GET method (alternative approach)
+            const submitUrl = `${baseUrl}?${params.toString()}`;
             
-            const fields = {
-                [GOOGLE_FORM_CONFIG.fields.name]: nameValue,
-                [GOOGLE_FORM_CONFIG.fields.email]: emailValue,
-                [GOOGLE_FORM_CONFIG.fields.category]: categoryValue,
-                [GOOGLE_FORM_CONFIG.fields.title]: titleValue,
-                [GOOGLE_FORM_CONFIG.fields.description]: descriptionValue
-            };
+            // Create an image element to trigger the request (old-school trick)
+            const img = new Image();
+            img.src = submitUrl;
             
-            Object.entries(fields).forEach(([name, value]) => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = name;
-                input.value = value;
-                tempForm.appendChild(input);
-            });
+            // Also try with fetch as backup
+            fetch(submitUrl, {
+                method: 'GET',
+                mode: 'no-cors'
+            }).catch(() => {});
             
-            document.body.appendChild(tempForm);
-            tempForm.submit();
-            
-            setTimeout(() => {
-                document.body.removeChild(tempForm);
-                document.body.removeChild(iframe);
-            }, 1000);
+            // Wait a moment for submission
+            await new Promise(resolve => setTimeout(resolve, 1000));
 
             ideaForm.style.display = 'none';
             document.getElementById('success-message').style.display = 'block';
