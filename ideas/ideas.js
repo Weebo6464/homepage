@@ -96,23 +96,39 @@ if (ideaForm) {
             const titleValue = document.getElementById('title')?.value?.trim() || '';
             const descriptionValue = document.getElementById('description')?.value?.trim() || '';
             
-            const formData = new URLSearchParams();
-            formData.append(GOOGLE_FORM_CONFIG.fields.name, nameValue);
-            formData.append(GOOGLE_FORM_CONFIG.fields.email, emailValue);
-            formData.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
-            formData.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
-            formData.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
+            const iframe = document.createElement('iframe');
+            iframe.name = 'hidden_iframe';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
             
-            const formUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
+            const tempForm = document.createElement('form');
+            tempForm.action = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
+            tempForm.method = 'POST';
+            tempForm.target = 'hidden_iframe';
             
-            await fetch(formUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formData.toString()
+            const fields = {
+                [GOOGLE_FORM_CONFIG.fields.name]: nameValue,
+                [GOOGLE_FORM_CONFIG.fields.email]: emailValue,
+                [GOOGLE_FORM_CONFIG.fields.category]: categoryValue,
+                [GOOGLE_FORM_CONFIG.fields.title]: titleValue,
+                [GOOGLE_FORM_CONFIG.fields.description]: descriptionValue
+            };
+            
+            Object.entries(fields).forEach(([name, value]) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                input.value = value;
+                tempForm.appendChild(input);
             });
+            
+            document.body.appendChild(tempForm);
+            tempForm.submit();
+            
+            setTimeout(() => {
+                document.body.removeChild(tempForm);
+                document.body.removeChild(iframe);
+            }, 1000);
 
             ideaForm.style.display = 'none';
             document.getElementById('success-message').style.display = 'block';
