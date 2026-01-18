@@ -223,6 +223,20 @@ header h1 {
     margin-bottom: 40px;
 }
 
+.form-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #ffdf00;
+    margin-bottom: 15px;
+}
+
+.form-intro {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #d1d5db;
+    margin-bottom: 35px;
+}
+
 .development-section {
     padding: 0 20px 40px;
 }
@@ -350,6 +364,11 @@ header h1 {
     font-size: 1rem;
     font-family: inherit;
     transition: all 0.3s ease;
+}
+
+.form-group select option {
+    background: #1a1a1a;
+    color: #fff;
 }
 
 .form-group input:focus,
@@ -481,6 +500,26 @@ header h1 {
 .alt-icon {
     font-size: 3rem;
     margin-bottom: 15px;
+}
+
+.alt-icon-svg {
+    width: 60px;
+    height: 60px;
+    fill: #ffdf00;
+    transition: all 0.3s ease;
+}
+
+.alt-card:hover .alt-icon-svg {
+    fill: #fff;
+    transform: scale(1.1);
+}
+
+body.light-mode .alt-icon-svg {
+    fill: #ff6b6b;
+}
+
+body.light-mode .alt-card:hover .alt-icon-svg {
+    fill: #1d1d1f;
 }
 
 .alt-card h3 {
@@ -636,6 +675,11 @@ body.light-mode .form-group textarea {
     background: rgba(255, 255, 255, 0.9);
     color: #1d1d1f;
     border-color: rgba(255, 223, 0, 0.4);
+}
+
+body.light-mode .form-group select option {
+    background: #fff;
+    color: #1d1d1f;
 }
 
 body.light-mode .form-group input::placeholder,
