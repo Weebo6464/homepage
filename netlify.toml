@@ -1,7 +1,18 @@
 [build]
+  publish = "."
   functions = "netlify/functions"
+
+# Form handling configuration
+[[plugins]]
+  package = "@netlify/plugin-form-handler"
 
 [[redirects]]
   from = "/*"
   to = "/404.html"
   status = 404
+
+# Optional: Configure form notifications
+# You can also set this up in the Netlify dashboard under Forms > Settings
+[context.production.environment]
+  # Add your email here if you want notifications
+  # NOTIFICATION_EMAIL = "your-email@example.com"

@@ -1,0 +1,42 @@
+[
+    {
+        "question": "What is Retro Rewind?",
+        "answer": "Retro Rewind is a popular Mario Kart Wii custom track distribution featuring retro tracks from previous Mario Kart games, reimagined with modern features and enhancements. I'm a developer for this project!"
+    },
+    {
+        "question": "What is Insane Kart Wii?",
+        "answer": "Insane Kart Wii is an extreme Mario Kart Wii modpack that pushes the limits with challenging tracks, unique mechanics, and custom content. I also work as a developer on this project."
+    },
+    {
+        "question": "How can I use your SM64 models?",
+        "answer": "My Super Mario 64 model ports are available on the SM64 Model Ports page. But currently these models are private and not available for download."
+    },
+    {
+        "question": "Can I request a custom model or mod?",
+        "answer": "Yes! I'm open to new ideas and requests. Check out the Ideas & Requests page to submit your suggestions. While I can't guarantee I'll work on every request, I love hearing from the community!"
+    },
+    {
+        "question": "How do I join RetroWFC or IKWFC?",
+        "answer": "You can join the Retro Rewind Discord server for RetroWFC or the Insane Kart Wii Discord server for IKWFC. Links are available on the main page. I'm a moderator for both communities, so feel free to ask questions!"
+    },
+    {
+        "question": "What tools do you use for 3D modeling?",
+        "answer": "I primarily use Blender for 3D modeling and various conversion tools to port models into Super Mario 64 and Mario Kart Wii formats. The exact workflow depends on the project, but Blender is my tool."
+    },
+    {
+        "question": "Do you take commissions?",
+        "answer": "I'm primarily a hobby developer, so I don't typically take paid commissions. However, I'm always open to collaboration ideas and community requests. Feel free to reach out through Discord or the Ideas & Requests page!"
+    },
+    {
+        "question": "How can I support your work?",
+        "answer": "The best way to support me is by being part of the community! Join the Discord servers, try out the mods, share feedback, and spread the word. You can also follow me on YouTube, Twitter, and other social platforms linked on the main page."
+    },
+    {
+        "question": "Where can I find your Discord bot?",
+        "answer": "The WeebOwO Discord bot has its own page on this site! You can find information about it, including how to invite it to your server, on the WeebOwO Bot page."
+    },
+    {
+        "question": "Can I contribute to your projects?",
+        "answer": "Absolutely! Many of my projects are open to community contributions. Check out my GitHub profile for repositories, or join the Discord servers to discuss collaboration opportunities. I'm always happy to work with fellow modders!"
+    }
+]

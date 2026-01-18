@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Weebo64</title>
+    <link rel="icon" type="image/png" href="../images/Weebo_logo.png">
+    <link rel="stylesheet" href="faq.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="loading-screen">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-text">Loading FAQ...</div>
+        </div>
+    </div>
+    <canvas id="stars"></canvas>
+    <div class="floating-renders">
+        <img src="../images/Weebo.png" alt="Weebo" class="render render-1">
+        <img src="../images/WeebOwO.png" alt="WeebOwO" class="render render-2">
+        <img src="../images/weebo64.png" alt="Weebo64" class="render render-3">
+        <img src="../images/weebowo64.png" alt="WeebOwO64" class="render render-4">
+    </div>
+    <div class="theme-switcher">
+        <button id="theme-toggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+        </button>
+        <div class="theme-menu" id="theme-menu">
+            <button class="theme-option" data-theme="dark">🌙 Dark</button>
+            <button class="theme-option" data-theme="light">☀️ Light</button>
+            <button class="theme-option" data-theme="auto">💻 System</button>
+        </div>
+    </div>
+    <a href="../" class="back-button" aria-label="Back to home">
+        <span class="back-icon">←</span>
+        <span class="back-text">Back</span>
+    </a>
+    <div class="container">
+        <header>
+            <h1>Frequently Asked Questions</h1>
+            <p class="subtitle">Got questions? I've got answers!</p>
+        </header>
+        <section class="faq-section">
+            <div class="faq-list" id="faq-list">
+                <!-- FAQ items will be loaded here -->
+            </div>
+        </section>
+    </div>
+    <script src="../stars.js"></script>
+    <script src="faq.js"></script>
+</body>
+</html>
