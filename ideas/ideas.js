@@ -62,6 +62,8 @@ window.addEventListener('load', () => {
     }
 });
 
+// Google Forms direct submission is blocked by CORS
+// Using iframe submission method instead
 const GOOGLE_FORM_CONFIG = {
     formId: '1FAIpQLSdbeSF11OsYsYACJfnhB9-gXwF56FE79L8kPbPLD2VVye-bZQ',
     fields: {
@@ -96,27 +98,32 @@ if (ideaForm) {
             const titleValue = document.getElementById('title')?.value?.trim() || '';
             const descriptionValue = document.getElementById('description')?.value?.trim() || '';
             
-            const formData = new FormData();
-            formData.append(GOOGLE_FORM_CONFIG.fields.name, nameValue);
-            formData.append(GOOGLE_FORM_CONFIG.fields.email, emailValue);
-            formData.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
-            formData.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
-            formData.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
+            // Create hidden iframe for submission
+            const iframe = document.createElement('iframe');
+            iframe.name = 'hidden_iframe';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
             
-            const baseUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
+            // Build form URL with parameters
+            const params = new URLSearchParams();
+            params.append(GOOGLE_FORM_CONFIG.fields.name, nameValue);
+            params.append(GOOGLE_FORM_CONFIG.fields.email, emailValue);
+            params.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
+            params.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
+            params.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
             
-            await fetch(baseUrl, {
-                method: 'POST',
-                body: formData,
-                mode: 'no-cors'
-            }).catch(() => {
-                // Ignore errors - no-cors mode always throws but submission works
-            });
+            const submitUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_CONFIG.formId}/formResponse?${params.toString()}`;
             
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            ideaForm.style.display = 'none';
-            document.getElementById('success-message').style.display = 'block';
+            // Submit via iframe
+            iframe.onload = () => {
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                    ideaForm.style.display = 'none';
+                    document.getElementById('success-message').style.display = 'block';
+                }, 500);
+            };
+            
+            iframe.src = submitUrl;
             
         } catch (error) {
             console.error('Submission error:', error);
