@@ -104,19 +104,22 @@ if (ideaForm) {
             params.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
             params.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
             params.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
+            params.append('submit', 'Submit');
             
-            // Submit using GET method (alternative approach)
-            const submitUrl = `${baseUrl}?${params.toString()}`;
+            // Use POST with FormData
+            const formData = new FormData();
+            formData.append(GOOGLE_FORM_CONFIG.fields.name, nameValue);
+            formData.append(GOOGLE_FORM_CONFIG.fields.email, emailValue);
+            formData.append(GOOGLE_FORM_CONFIG.fields.category, categoryValue);
+            formData.append(GOOGLE_FORM_CONFIG.fields.title, titleValue);
+            formData.append(GOOGLE_FORM_CONFIG.fields.description, descriptionValue);
+            formData.append('submit', 'Submit');
             
-            // Create an image element to trigger the request (old-school trick)
-            const img = new Image();
-            img.src = submitUrl;
-            
-            // Also try with fetch as backup
-            fetch(submitUrl, {
-                method: 'GET',
+            fetch(baseUrl, {
+                method: 'POST',
+                body: formData,
                 mode: 'no-cors'
-            }).catch(() => {});
+            });
             
             // Wait a moment for submission
             await new Promise(resolve => setTimeout(resolve, 1000));
